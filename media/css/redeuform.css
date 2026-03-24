@@ -1,0 +1,25 @@
+/*
+ * com_redeuform – supplemental styles
+ * Tailwind CSS (CDN) provides the base utility classes.
+ * This file adds scoped overrides and transitions not easily
+ * expressed with Tailwind utility classes alone.
+ */
+
+/* Smooth focus ring transition on all inputs / textareas */
+#redeuform-app input,
+#redeuform-app textarea {
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+/* Ensure the reCAPTCHA widget scales on small screens */
+@media (max-width: 400px) {
+    .g-recaptcha {
+        transform: scale(0.88);
+        transform-origin: 0 0;
+    }
+}
+
+/* Submit button subtle press effect */
+#rf-submit:active {
+    transform: translateY(0) !important;
+}
