@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0" method="upgrade">
+    <name>Redeuform</name>
+    <creationDate>2026-03-24</creationDate>
+    <author>Redooor LLP</author>
+    <authorEmail>support@redooor.com</authorEmail>
+    <authorUrl>http://redooor.com</authorUrl>
+    <copyright>Copyright (C) 2026</copyright>
+    <version>1.0.0</version>
+    <description>Contact form with phone field, admin email settings, and database logging.</description>
+
+    <!-- SQL Installation -->
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <!-- Site Files (Front-end) -->
+    <files folder="site">
+        <filename>redeuform.php</filename>
+        <filename>index.html</filename>
+        <folder>controllers</folder>
+        <folder>models</folder>
+        <folder>views</folder>
+        <folder>language</folder>
+    </files>
+
+    <languages folder="site">
+        <language tag="en-GB">language/en-GB/en-GB.com_redeuform.ini</language>
+        <language tag="zh-CN">language/zh-CN/zh-CN.com_redeuform.ini</language>
+    </languages>
+
+    <!-- Administration (Back-end) -->
+    <administration>
+        <menu>COM_REDEUFORM</menu>
+        <files folder="admin">
+            <filename>redeuform.php</filename>
+            <filename>index.html</filename>
+            <folder>controllers</folder>
+            <folder>models</folder>
+            <folder>views</folder>
+            <folder>sql</folder>
+            <folder>language</folder>
+        </files>
+
+        <languages folder="admin">
+            <language tag="en-GB">language/en-GB/en-GB.com_redeuform.ini</language>
+            <language tag="en-GB">language/en-GB/en-GB.com_redeuform.sys.ini</language>
+            <language tag="zh-CN">language/zh-CN/zh-CN.com_redeuform.ini</language>
+            <language tag="zh-CN">language/zh-CN/zh-CN.com_redeuform.sys.ini</language>
+        </languages>
+
+        <!-- Admin Configuration Options -->
+        <config>
+            <fields name="params">
+                <fieldset name="component" label="COM_REDEUFORM_CONFIGURATION">
+                    <field name="receiving_email" type="text" label="COM_REDEUFORM_RECEIVING_EMAIL_LABEL" required="true" validate="email" size="40" />
+                    <field name="send_as_email" type="text" label="COM_REDEUFORM_SEND_AS_EMAIL_LABEL" validate="email" size="40" />
+                    <field name="email_template" type="textarea" label="COM_REDEUFORM_EMAIL_TEMPLATE_LABEL" rows="10" cols="50" 
+                           default="Name: [name]&#10;Email: [email]&#10;Phone: [phone]&#10;Message: [message]" />
+                </fieldset>
+            </fields>
+        </config>
+    </administration>
+</extension>
