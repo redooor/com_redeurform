@@ -15,6 +15,9 @@ class RedeuformViewSubmissions extends JViewLegacy
         $this->pagination = $this->get('Pagination');
         $this->state      = $this->get('State');
 
+        $this->listOrder  = $this->state->get('list.ordering', 'created_at');
+        $this->listDirn   = $this->state->get('list.direction', 'desc');
+
         RedeuformHelper::addSubmenu('submissions');
 
         $this->addToolbar();
