@@ -1,7 +1,8 @@
 <?php
 defined('_JEXEC') or die;
 
-JLoader::registerPrefix('Redeuform', JPATH_ADMINISTRATOR . '/components/com_redeuform');
+// Explicitly load the helper so it is always available
+require_once __DIR__ . '/helpers/redeuform.php';
 
 $controller = JControllerLegacy::getInstance('Redeuform');
 $controller->execute(JFactory::getApplication()->input->get('task'));

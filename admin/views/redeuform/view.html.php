@@ -1,6 +1,8 @@
 <?php
 defined('_JEXEC') or die;
 
+require_once JPATH_ADMINISTRATOR . '/components/com_redeuform/helpers/redeuform.php';
+
 class RedeuformViewRedeuform extends JViewLegacy
 {
     protected $form;
