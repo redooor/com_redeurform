@@ -21,9 +21,9 @@
             type="textarea"
             label="COM_REDEUFORM_PARAM_EMAIL_TEMPLATE_LABEL"
             description="COM_REDEUFORM_PARAM_EMAIL_TEMPLATE_DESC"
-            rows="10"
+            rows="12"
             cols="60"
-            default="Name: {name}&#10;Email: {email}&#10;Phone: {phone}&#10;&#10;Message:&#10;{message}"
+            default="From:    {name}&#10;Email:   {email}&#10;Phone:   {phone}&#10;&#10;Message:&#10;{message}&#10;&#10;---&#10;Sent to:   {receiving_email}&#10;Send-as:   {sendfrom_email}"
         />
     </fieldset>
     <fieldset name="recaptcha" label="COM_REDEUFORM_SETTINGS_FIELDSET_RECAPTCHA">
