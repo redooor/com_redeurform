@@ -14,17 +14,18 @@ class RedeuformViewRedeuform extends JViewLegacy
 
         $doc = JFactory::getDocument();
 
-        // Prefix config MUST be declared before the Tailwind script tag
-        $doc->addScriptDeclaration('window.tailwind = { config: { prefix: "tw-" } };');
+        // Load component CSS — no external CDN dependency
+        $doc->addStyleSheet(
+            JUri::root(true) . '/media/com_redeuform/css/redeuform.css',
+            array('version' => '1.0.4')
+        );
 
-        // Use the pinned versioned URL — the bare CDN URL returns a 302 redirect
-        // which some servers/browsers do not follow for script tags
-        $doc->addScript('https://cdn.tailwindcss.com/3.4.17');
-
-        // Load reCAPTCHA if site key configured
+        // reCAPTCHA v3 — loads a single lightweight script, no iframe widget
         $siteKey = $this->params->get('recaptcha_site_key', '');
         if (!empty($siteKey)) {
-            $doc->addScript('https://www.google.com/recaptcha/api.js');
+            $doc->addScript(
+                'https://www.google.com/recaptcha/api.js?render=' . htmlspecialchars($siteKey)
+            );
         }
 
         $this->siteKey = $siteKey;

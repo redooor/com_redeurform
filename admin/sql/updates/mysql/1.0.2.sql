@@ -1,0 +1,1 @@
+-- 1.0.2: Replaced Tailwind CDN with self-contained custom CSS — no schema changes

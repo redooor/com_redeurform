@@ -18,8 +18,9 @@ class RedeuformControllerForm extends JControllerLegacy
             'message' => $input->getString('message', ''),
         );
 
-        // Backend validation
+        // Backend field validation
         $errors = array();
+
         if (empty(trim($data['name']))) {
             $errors[] = JText::_('COM_REDEUFORM_ERROR_NAME_REQUIRED');
         }
@@ -32,29 +33,43 @@ class RedeuformControllerForm extends JControllerLegacy
             $errors[] = JText::_('COM_REDEUFORM_ERROR_MESSAGE_TOO_LONG');
         }
 
-        // Google reCAPTCHA v2 verification
-        $recaptchaResponse = $input->getString('g-recaptcha-response', '');
-        $params            = JComponentHelper::getParams('com_redeuform');
-        $secretKey         = $params->get('recaptcha_secret_key', '');
+        // reCAPTCHA v3 server-side verification
+        $params    = JComponentHelper::getParams('com_redeuform');
+        $secretKey = $params->get('recaptcha_secret_key', '');
+        $threshold = (float) $params->get('recaptcha_threshold', '0.5');
 
         if (!empty($secretKey)) {
-            if (empty($recaptchaResponse)) {
+            $recaptchaToken = $input->getString('g-recaptcha-response', '');
+
+            if (empty($recaptchaToken)) {
                 $errors[] = JText::_('COM_REDEUFORM_ERROR_RECAPTCHA_REQUIRED');
             } else {
-                $verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
-                $ch = curl_init($verifyUrl);
+                $ch = curl_init('https://www.google.com/recaptcha/api/siteverify');
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_POST, true);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, array(
                     'secret'   => $secretKey,
-                    'response' => $recaptchaResponse,
+                    'response' => $recaptchaToken,
                     'remoteip' => $app->input->server->getString('REMOTE_ADDR', ''),
                 ));
-                $result   = curl_exec($ch);
+                $result       = curl_exec($ch);
+                $curlError    = curl_errno($ch);
                 curl_close($ch);
-                $captchaResult = json_decode($result, true);
-                if (empty($captchaResult['success'])) {
-                    $errors[] = JText::_('COM_REDEUFORM_ERROR_RECAPTCHA_FAILED');
+
+                if ($curlError || empty($result)) {
+                    // cURL failed — fail open to avoid blocking legitimate users
+                    JFactory::getApplication()->enqueueMessage(
+                        JText::_('COM_REDEUFORM_WARNING_RECAPTCHA_SKIPPED'), 'warning'
+                    );
+                } else {
+                    $captchaResult = json_decode($result, true);
+                    $success       = !empty($captchaResult['success']);
+                    $score         = isset($captchaResult['score']) ? (float) $captchaResult['score'] : 0.0;
+                    $action        = isset($captchaResult['action']) ? $captchaResult['action'] : '';
+
+                    if (!$success || $score < $threshold || $action !== 'contact_form') {
+                        $errors[] = JText::_('COM_REDEUFORM_ERROR_RECAPTCHA_FAILED');
+                    }
                 }
             }
         }
@@ -67,7 +82,7 @@ class RedeuformControllerForm extends JControllerLegacy
             return;
         }
 
-        // Save submission
+        // Save and email
         $data['ip_address'] = $app->input->server->getString('REMOTE_ADDR', '');
         if ($model->saveSubmission($data)) {
             $model->sendEmail($data);

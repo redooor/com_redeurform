@@ -41,5 +41,13 @@
             description="COM_REDEUFORM_PARAM_RECAPTCHA_SECRET_KEY_DESC"
             size="60"
         />
+        <field
+            name="recaptcha_threshold"
+            type="text"
+            label="COM_REDEUFORM_PARAM_RECAPTCHA_THRESHOLD_LABEL"
+            description="COM_REDEUFORM_PARAM_RECAPTCHA_THRESHOLD_DESC"
+            size="10"
+            default="0.5"
+        />
     </fieldset>
 </form>

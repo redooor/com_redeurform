@@ -1,61 +1,54 @@
 <?php defined('_JEXEC') or die; ?>
 
-<div class="tw-min-h-screen tw-bg-gradient-to-br tw-from-slate-50 tw-to-stone-100 tw-py-12 tw-px-4 sm:tw-px-6 lg:tw-px-8" id="redeuform-app">
-
-  <div class="tw-max-w-xl tw-mx-auto">
+<div id="redeuform-app">
+  <div class="rf-container">
 
     <!-- Header -->
-    <div class="tw-text-center tw-mb-10">
-      <div class="tw-inline-flex tw-items-center tw-justify-center tw-w-16 tw-h-16 tw-rounded-2xl tw-bg-stone-800 tw-mb-4 tw-shadow-xl">
-        <svg xmlns="http://www.w3.org/2000/svg" class="tw-w-8 tw-h-8 tw-text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+    <div class="rf-header">
+      <div class="rf-icon-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5H4.5a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
         </svg>
       </div>
-      <h1 class="tw-text-3xl tw-font-bold tw-text-stone-800 tw-tracking-tight" style="font-family:'Georgia',serif;">
-        <?php echo JText::_('COM_REDEUFORM_TITLE'); ?>
-      </h1>
-      <p class="tw-mt-2 tw-text-stone-500 tw-text-sm">
-        <?php echo JText::_('COM_REDEUFORM_SUBTITLE'); ?>
-      </p>
+      <h1 class="rf-title"><?php echo JText::_('COM_REDEUFORM_TITLE'); ?></h1>
+      <p class="rf-subtitle"><?php echo JText::_('COM_REDEUFORM_SUBTITLE'); ?></p>
     </div>
 
     <!-- System messages -->
     <?php $messages = JFactory::getApplication()->getMessageQueue(); ?>
     <?php if (!empty($messages)): ?>
-      <div class="tw-mb-6 tw-space-y-2">
+      <div class="rf-messages">
         <?php foreach ($messages as $msg): ?>
           <?php
-            $cls = 'tw-bg-blue-50 tw-border-blue-200 tw-text-blue-700';
-            if ($msg['type'] === 'error')   $cls = 'tw-bg-red-50 tw-border-red-200 tw-text-red-700';
-            if ($msg['type'] === 'message') $cls = 'tw-bg-emerald-50 tw-border-emerald-200 tw-text-emerald-700';
-            if ($msg['type'] === 'warning') $cls = 'tw-bg-amber-50 tw-border-amber-200 tw-text-amber-700';
+            $cls = 'rf-message--info';
+            if ($msg['type'] === 'error')   $cls = 'rf-message--error';
+            if ($msg['type'] === 'message') $cls = 'rf-message--success';
+            if ($msg['type'] === 'warning') $cls = 'rf-message--warning';
           ?>
-          <div class="tw-border tw-rounded-xl tw-px-4 tw-py-3 tw-text-sm tw-font-medium <?php echo $cls; ?>">
+          <div class="rf-message <?php echo $cls; ?>">
             <?php echo htmlspecialchars($msg['message']); ?>
           </div>
         <?php endforeach; ?>
       </div>
     <?php endif; ?>
 
-    <!-- Form Card -->
-    <div class="tw-bg-white tw-rounded-3xl tw-shadow-xl tw-border tw-border-stone-100 tw-overflow-hidden">
+    <!-- Card -->
+    <div class="rf-card">
+      <div class="rf-card-accent"></div>
+      <div class="rf-card-body">
 
-      <!-- Accent bar -->
-      <div class="tw-h-1.5 tw-bg-gradient-to-r tw-from-amber-400 tw-via-orange-400 tw-to-rose-400"></div>
-
-      <div class="tw-p-8 sm:tw-p-10">
         <form
           id="redeuform-contact"
           action="<?php echo JRoute::_('index.php?option=com_redeuform&task=form.submit'); ?>"
           method="post"
           novalidate
-          class="tw-space-y-6"
+          class="rf-form"
         >
 
           <!-- Name -->
-          <div>
-            <label for="rf-name" class="tw-block tw-text-xs tw-font-semibold tw-text-stone-500 tw-uppercase tw-tracking-widest tw-mb-1.5">
-              <?php echo JText::_('COM_REDEUFORM_FIELD_NAME'); ?> <span class="tw-text-rose-500">*</span>
+          <div class="rf-field">
+            <label for="rf-name" class="rf-label">
+              <?php echo JText::_('COM_REDEUFORM_FIELD_NAME'); ?><span class="rf-required">*</span>
             </label>
             <input
               type="text"
@@ -63,94 +56,93 @@
               name="name"
               maxlength="255"
               autocomplete="name"
-              class="tw-w-full tw-px-4 tw-py-3 tw-rounded-xl tw-border tw-border-stone-200 tw-bg-stone-50 tw-text-stone-800 tw-text-sm tw-transition focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-amber-400 focus:tw-border-transparent focus:tw-bg-white"
+              class="rf-input"
               placeholder="<?php echo JText::_('COM_REDEUFORM_FIELD_NAME_PLACEHOLDER'); ?>"
             />
-            <p class="redeu-error tw-hidden tw-mt-1.5 tw-text-xs tw-text-rose-500 tw-font-medium" data-field="name">
+            <span class="rf-error" data-field="name">
               <?php echo JText::_('COM_REDEUFORM_ERROR_NAME_REQUIRED'); ?>
-            </p>
+            </span>
           </div>
 
           <!-- Email -->
-          <div>
-            <label for="rf-email" class="tw-block tw-text-xs tw-font-semibold tw-text-stone-500 tw-uppercase tw-tracking-widest tw-mb-1.5">
-              <?php echo JText::_('COM_REDEUFORM_FIELD_EMAIL'); ?> <span class="tw-text-rose-500">*</span>
+          <div class="rf-field">
+            <label for="rf-email" class="rf-label">
+              <?php echo JText::_('COM_REDEUFORM_FIELD_EMAIL'); ?><span class="rf-required">*</span>
             </label>
             <input
               type="email"
               id="rf-email"
               name="email"
               autocomplete="email"
-              class="tw-w-full tw-px-4 tw-py-3 tw-rounded-xl tw-border tw-border-stone-200 tw-bg-stone-50 tw-text-stone-800 tw-text-sm tw-transition focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-amber-400 focus:tw-border-transparent focus:tw-bg-white"
+              class="rf-input"
               placeholder="<?php echo JText::_('COM_REDEUFORM_FIELD_EMAIL_PLACEHOLDER'); ?>"
             />
-            <p class="redeu-error tw-hidden tw-mt-1.5 tw-text-xs tw-text-rose-500 tw-font-medium" data-field="email">
+            <span class="rf-error" data-field="email">
               <?php echo JText::_('COM_REDEUFORM_ERROR_EMAIL_INVALID'); ?>
-            </p>
+            </span>
           </div>
 
           <!-- Phone (optional) -->
-          <div>
-            <label for="rf-phone" class="tw-block tw-text-xs tw-font-semibold tw-text-stone-500 tw-uppercase tw-tracking-widest tw-mb-1.5">
+          <div class="rf-field">
+            <label for="rf-phone" class="rf-label">
               <?php echo JText::_('COM_REDEUFORM_FIELD_PHONE'); ?>
-              <span class="tw-text-stone-300 tw-font-normal tw-normal-case tw-tracking-normal tw-ml-1"><?php echo JText::_('COM_REDEUFORM_FIELD_OPTIONAL'); ?></span>
+              <span class="rf-optional"><?php echo JText::_('COM_REDEUFORM_FIELD_OPTIONAL'); ?></span>
             </label>
             <input
               type="tel"
               id="rf-phone"
               name="phone"
               autocomplete="tel"
-              class="tw-w-full tw-px-4 tw-py-3 tw-rounded-xl tw-border tw-border-stone-200 tw-bg-stone-50 tw-text-stone-800 tw-text-sm tw-transition focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-amber-400 focus:tw-border-transparent focus:tw-bg-white"
+              class="rf-input"
               placeholder="<?php echo JText::_('COM_REDEUFORM_FIELD_PHONE_PLACEHOLDER'); ?>"
             />
           </div>
 
           <!-- Message -->
-          <div>
-            <label for="rf-message" class="tw-block tw-text-xs tw-font-semibold tw-text-stone-500 tw-uppercase tw-tracking-widest tw-mb-1.5">
-              <?php echo JText::_('COM_REDEUFORM_FIELD_MESSAGE'); ?> <span class="tw-text-rose-500">*</span>
+          <div class="rf-field">
+            <label for="rf-message" class="rf-label">
+              <?php echo JText::_('COM_REDEUFORM_FIELD_MESSAGE'); ?><span class="rf-required">*</span>
             </label>
             <textarea
               id="rf-message"
               name="message"
               rows="5"
               maxlength="255"
-              class="tw-w-full tw-px-4 tw-py-3 tw-rounded-xl tw-border tw-border-stone-200 tw-bg-stone-50 tw-text-stone-800 tw-text-sm tw-transition focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-amber-400 focus:tw-border-transparent focus:tw-bg-white tw-resize-none"
+              class="rf-textarea"
               placeholder="<?php echo JText::_('COM_REDEUFORM_FIELD_MESSAGE_PLACEHOLDER'); ?>"
             ></textarea>
-            <div class="tw-flex tw-justify-between tw-items-center tw-mt-1.5">
-              <p class="redeu-error tw-hidden tw-text-xs tw-text-rose-500 tw-font-medium" data-field="message">
+            <div class="rf-field-footer">
+              <span class="rf-error" data-field="message">
                 <?php echo JText::_('COM_REDEUFORM_ERROR_MESSAGE_REQUIRED'); ?>
-              </p>
-              <p class="tw-text-xs tw-text-stone-400 tw-ml-auto">
-                <span id="rf-char-count">0</span>/255
-              </p>
+              </span>
+              <span class="rf-counter" id="rf-char-count">0/255</span>
             </div>
           </div>
 
-          <!-- reCAPTCHA -->
+          <!-- reCAPTCHA v3: hidden token field, populated by JS before submit -->
           <?php if (!empty($this->siteKey)): ?>
-          <div>
-            <div class="g-recaptcha" data-sitekey="<?php echo htmlspecialchars($this->siteKey); ?>"></div>
-            <p class="redeu-error tw-hidden tw-mt-1.5 tw-text-xs tw-text-rose-500 tw-font-medium" data-field="recaptcha">
-              <?php echo JText::_('COM_REDEUFORM_ERROR_RECAPTCHA_REQUIRED'); ?>
-            </p>
-          </div>
+          <input type="hidden" name="g-recaptcha-response" id="rf-recaptcha-token" value="" />
+          <span class="rf-error" data-field="recaptcha" style="display:none;">
+            <?php echo JText::_('COM_REDEUFORM_ERROR_RECAPTCHA_REQUIRED'); ?>
+          </span>
+          <?php endif; ?>
+
+          <!-- reCAPTCHA v3 badge note -->
+          <?php if (!empty($this->siteKey)): ?>
+          <p class="rf-recaptcha-note">
+            <?php echo JText::_('COM_REDEUFORM_RECAPTCHA_V3_NOTE'); ?>
+          </p>
           <?php endif; ?>
 
           <!-- Hidden fields -->
           <input type="hidden" name="<?php echo $this->token; ?>" value="1" />
 
           <!-- Submit -->
-          <button
-            type="submit"
-            id="rf-submit"
-            class="tw-w-full tw-flex tw-items-center tw-justify-center tw-gap-2 tw-px-6 tw-py-3.5 tw-rounded-xl tw-bg-stone-800 hover:tw-bg-stone-700 active:tw-bg-stone-900 tw-text-white tw-text-sm tw-font-semibold tw-tracking-wide tw-transition-all tw-duration-200 tw-shadow-lg hover:tw-shadow-xl hover:tw--translate-y-0.5"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="tw-w-4 tw-h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <button type="submit" id="rf-submit" class="rf-submit">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
             </svg>
-            <?php echo JText::_('COM_REDEUFORM_BUTTON_SEND'); ?>
+            <span id="rf-submit-label"><?php echo JText::_('COM_REDEUFORM_BUTTON_SEND'); ?></span>
           </button>
 
         </form>
@@ -158,9 +150,7 @@
     </div>
 
     <!-- Footer note -->
-    <p class="tw-text-center tw-text-xs tw-text-stone-400 tw-mt-6">
-      <?php echo JText::_('COM_REDEUFORM_PRIVACY_NOTE'); ?>
-    </p>
+    <p class="rf-footer-note"><?php echo JText::_('COM_REDEUFORM_PRIVACY_NOTE'); ?></p>
 
   </div>
 </div>
@@ -169,31 +159,45 @@
 (function () {
   'use strict';
 
-  var form    = document.getElementById('redeuform-contact');
-  var msgArea = document.getElementById('rf-message');
-  var counter = document.getElementById('rf-char-count');
+  var form      = document.getElementById('redeuform-contact');
+  var msgArea   = document.getElementById('rf-message');
+  var counter   = document.getElementById('rf-char-count');
+  var submitBtn = document.getElementById('rf-submit');
+  var submitLbl = document.getElementById('rf-submit-label');
+  var siteKey   = <?php echo json_encode($this->siteKey); ?>;
 
-  // Live character counter
+  // ── Character counter ──────────────────────────────────────────────────────
   if (msgArea && counter) {
     msgArea.addEventListener('input', function () {
-      counter.textContent = msgArea.value.length;
-      if (msgArea.value.length >= 255) {
-        counter.classList.add('tw-text-rose-500');
-        counter.classList.remove('tw-text-stone-400');
+      var len = msgArea.value.length;
+      counter.textContent = len + '/255';
+      if (len >= 255) {
+        counter.classList.add('rf-counter--limit');
       } else {
-        counter.classList.remove('tw-text-rose-500');
-        counter.classList.add('tw-text-stone-400');
+        counter.classList.remove('rf-counter--limit');
       }
     });
   }
 
+  // ── Error helpers ──────────────────────────────────────────────────────────
   function showError(field, show) {
-    var el = document.querySelector('.redeu-error[data-field="' + field + '"]');
+    var el = document.querySelector('.rf-error[data-field="' + field + '"]');
     if (!el) return;
+    el.style.display = show ? 'block' : 'none';
     if (show) {
-      el.classList.remove('tw-hidden');
+      el.classList.add('rf-error--visible');
     } else {
-      el.classList.add('tw-hidden');
+      el.classList.remove('rf-error--visible');
+    }
+  }
+
+  function setInputError(id, hasError) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (hasError) {
+      el.classList.add('rf-input--error');
+    } else {
+      el.classList.remove('rf-input--error');
     }
   }
 
@@ -201,62 +205,95 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
-  function validateForm() {
+  // ── Field validation (without reCAPTCHA) ──────────────────────────────────
+  function validateFields() {
     var valid = true;
 
-    var name    = document.getElementById('rf-name').value.trim();
-    var email   = document.getElementById('rf-email').value.trim();
-    var message = msgArea ? msgArea.value.trim() : '';
+    var nameVal  = document.getElementById('rf-name').value.trim();
+    var emailVal = document.getElementById('rf-email').value.trim();
+    var msgVal   = msgArea ? msgArea.value.trim() : '';
 
-    showError('name', !name);
-    if (!name) valid = false;
+    var nameErr = !nameVal;
+    showError('name', nameErr);
+    setInputError('rf-name', nameErr);
+    if (nameErr) valid = false;
 
-    showError('email', !email || !validateEmail(email));
-    if (!email || !validateEmail(email)) valid = false;
+    var emailErr = !emailVal || !validateEmail(emailVal);
+    showError('email', emailErr);
+    setInputError('rf-email', emailErr);
+    if (emailErr) valid = false;
 
-    var msgError = !message || message.length > 255;
-    if (!message) {
-      document.querySelector('.redeu-error[data-field="message"]').textContent =
-        <?php echo json_encode(JText::_('COM_REDEUFORM_ERROR_MESSAGE_REQUIRED')); ?>;
-    } else if (message.length > 255) {
-      document.querySelector('.redeu-error[data-field="message"]').textContent =
-        <?php echo json_encode(JText::_('COM_REDEUFORM_ERROR_MESSAGE_TOO_LONG')); ?>;
+    var msgErrEl = document.querySelector('.rf-error[data-field="message"]');
+    var msgErr   = false;
+    if (!msgVal) {
+      msgErr = true;
+      if (msgErrEl) msgErrEl.textContent = <?php echo json_encode(JText::_('COM_REDEUFORM_ERROR_MESSAGE_REQUIRED')); ?>;
+    } else if (msgVal.length > 255) {
+      msgErr = true;
+      if (msgErrEl) msgErrEl.textContent = <?php echo json_encode(JText::_('COM_REDEUFORM_ERROR_MESSAGE_TOO_LONG')); ?>;
     }
-    showError('message', msgError);
-    if (msgError) valid = false;
-
-    <?php if (!empty($this->siteKey)): ?>
-    var captchaEl = document.querySelector('.redeu-error[data-field="recaptcha"]');
-    if (typeof grecaptcha !== 'undefined') {
-      var response = grecaptcha.getResponse();
-      if (!response) {
-        if (captchaEl) captchaEl.classList.remove('tw-hidden');
-        valid = false;
-      } else {
-        if (captchaEl) captchaEl.classList.add('tw-hidden');
-      }
-    }
-    <?php endif; ?>
+    showError('message', msgErr);
+    setInputError('rf-message', msgErr);
+    if (msgErr) valid = false;
 
     return valid;
   }
 
+  // ── Submit handler ─────────────────────────────────────────────────────────
   if (form) {
     form.addEventListener('submit', function (e) {
-      if (!validateForm()) {
-        e.preventDefault();
+      e.preventDefault();
+
+      if (!validateFields()) {
+        return;
       }
+
+      // If no reCAPTCHA configured, submit immediately
+      if (!siteKey) {
+        form.submit();
+        return;
+      }
+
+      // reCAPTCHA v3: execute silently and inject token before submitting
+      if (typeof grecaptcha === 'undefined') {
+        // Script not yet loaded — submit anyway (server will handle gracefully)
+        form.submit();
+        return;
+      }
+
+      // Disable button and show loading state
+      submitBtn.disabled = true;
+      if (submitLbl) submitLbl.textContent = <?php echo json_encode(JText::_('COM_REDEUFORM_BUTTON_SENDING')); ?>;
+
+      grecaptcha.ready(function () {
+        grecaptcha.execute(siteKey, { action: 'contact_form' }).then(function (token) {
+          var tokenField = document.getElementById('rf-recaptcha-token');
+          if (tokenField) {
+            tokenField.value = token;
+          }
+          form.submit();
+        }).catch(function () {
+          // Token fetch failed — re-enable button and show error
+          submitBtn.disabled = false;
+          if (submitLbl) submitLbl.textContent = <?php echo json_encode(JText::_('COM_REDEUFORM_BUTTON_SEND')); ?>;
+          showError('recaptcha', true);
+        });
+      });
     });
 
-    ['rf-name', 'rf-email', 'rf-message'].forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) {
-        el.addEventListener('blur', function () { validateForm(); });
-        el.addEventListener('input', function () {
-          var field = id === 'rf-name' ? 'name' : id === 'rf-email' ? 'email' : 'message';
-          showError(field, false);
-        });
-      }
+    // Clear errors on input
+    [
+      { id: 'rf-name',    field: 'name' },
+      { id: 'rf-email',   field: 'email' },
+      { id: 'rf-message', field: 'message' }
+    ].forEach(function (item) {
+      var el = document.getElementById(item.id);
+      if (!el) return;
+      el.addEventListener('blur',  function () { validateFields(); });
+      el.addEventListener('input', function () {
+        showError(item.field, false);
+        setInputError(item.id, false);
+      });
     });
   }
 }());
