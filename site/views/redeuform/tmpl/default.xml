@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-    <layout title="COM_REDEUFORM_MENU_TITLE" option="COM_REDEUFORM_MENU_OPTION">
-        <message><![CDATA[COM_REDEUFORM_MENU_DESC]]></message>
+    <layout title="COM_REDEUFORM_MENU_TITLE">
+        <message>
+            <![CDATA[COM_REDEUFORM_MENU_DESC]]>
+        </message>
     </layout>
+    <fields name="request">
+        <fieldset name="request" />
+    </fields>
 </metadata>
