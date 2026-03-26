@@ -1,8 +1,7 @@
 /*
  * com_redeuform – supplemental styles
- * Tailwind CSS (CDN) provides the base utility classes.
- * This file adds scoped overrides and transitions not easily
- * expressed with Tailwind utility classes alone.
+ * Tailwind CSS 3.4.17 (CDN, prefix: "tw-") provides the base utility classes.
+ * This file adds transitions and overrides not easily expressed with Tailwind alone.
  */
 
 /* Smooth focus ring transition on all inputs / textareas */
@@ -19,7 +18,14 @@
     }
 }
 
-/* Submit button subtle press effect */
+/* Prevent the Joomla template's Bootstrap box-sizing from breaking the layout */
+#redeuform-app *,
+#redeuform-app *::before,
+#redeuform-app *::after {
+    box-sizing: border-box;
+}
+
+/* Submit button press effect */
 #rf-submit:active {
     transform: translateY(0) !important;
 }
