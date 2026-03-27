@@ -14,18 +14,16 @@ class RedeuformViewRedeuform extends JViewLegacy
 
         $doc = JFactory::getDocument();
 
-        // Load component CSS — no external CDN dependency
+        // Component CSS — no external CDN dependency
         $doc->addStyleSheet(
             JUri::root(true) . '/media/com_redeuform/css/redeuform.css',
-            array('version' => '1.0.4')
+            array('version' => '1.0.7')
         );
 
-        // reCAPTCHA v3 — loads a single lightweight script, no iframe widget
-        $siteKey = $this->params->get('recaptcha_site_key', '');
+        // Cloudflare Turnstile widget script
+        $siteKey = trim($this->params->get('turnstile_site_key', ''));
         if (!empty($siteKey)) {
-            $doc->addScript(
-                'https://www.google.com/recaptcha/api.js?render=' . htmlspecialchars($siteKey)
-            );
+            $doc->addScript('https://challenges.cloudflare.com/turnstile/v0/api.js');
         }
 
         $this->siteKey = $siteKey;

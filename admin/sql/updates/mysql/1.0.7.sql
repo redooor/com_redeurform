@@ -1,0 +1,1 @@
+-- 1.0.7: Replaced reCAPTCHA v3 with Cloudflare Turnstile; updated all admin/site inputs and language strings; removed score threshold param

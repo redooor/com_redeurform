@@ -119,19 +119,19 @@
             </div>
           </div>
 
-          <!-- reCAPTCHA v3: hidden token field, populated by JS before submit -->
+          <!-- Cloudflare Turnstile widget -->
           <?php if (!empty($this->siteKey)): ?>
-          <input type="hidden" name="g-recaptcha-response" id="rf-recaptcha-token" value="" />
-          <span class="rf-error" data-field="recaptcha" style="display:none;">
-            <?php echo JText::_('COM_REDEUFORM_ERROR_RECAPTCHA_REQUIRED'); ?>
-          </span>
-          <?php endif; ?>
-
-          <!-- reCAPTCHA v3 badge note -->
-          <?php if (!empty($this->siteKey)): ?>
-          <p class="rf-recaptcha-note">
-            <?php echo JText::_('COM_REDEUFORM_RECAPTCHA_V3_NOTE'); ?>
-          </p>
+          <div class="rf-field">
+            <div
+              class="cf-turnstile"
+              data-sitekey="<?php echo htmlspecialchars($this->siteKey); ?>"
+              data-theme="light"
+              data-size="normal"
+            ></div>
+            <span class="rf-error" id="rf-turnstile-error" data-field="turnstile" style="display:none;">
+              <?php echo JText::_('COM_REDEUFORM_ERROR_TURNSTILE_REQUIRED'); ?>
+            </span>
+          </div>
           <?php endif; ?>
 
           <!-- Hidden fields -->
@@ -142,7 +142,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
             </svg>
-            <span id="rf-submit-label"><?php echo JText::_('COM_REDEUFORM_BUTTON_SEND'); ?></span>
+            <?php echo JText::_('COM_REDEUFORM_BUTTON_SEND'); ?>
           </button>
 
         </form>
@@ -159,12 +159,10 @@
 (function () {
   'use strict';
 
-  var form      = document.getElementById('redeuform-contact');
-  var msgArea   = document.getElementById('rf-message');
-  var counter   = document.getElementById('rf-char-count');
-  var submitBtn = document.getElementById('rf-submit');
-  var submitLbl = document.getElementById('rf-submit-label');
-  var siteKey   = <?php echo json_encode($this->siteKey); ?>;
+  var form    = document.getElementById('redeuform-contact');
+  var msgArea = document.getElementById('rf-message');
+  var counter = document.getElementById('rf-char-count');
+  var hasTurnstile = <?php echo !empty($this->siteKey) ? 'true' : 'false'; ?>;
 
   // ── Character counter ──────────────────────────────────────────────────────
   if (msgArea && counter) {
@@ -205,8 +203,8 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
-  // ── Field validation (without reCAPTCHA) ──────────────────────────────────
-  function validateFields() {
+  // ── Form validation ────────────────────────────────────────────────────────
+  function validateForm() {
     var valid = true;
 
     var nameVal  = document.getElementById('rf-name').value.trim();
@@ -236,52 +234,30 @@
     setInputError('rf-message', msgErr);
     if (msgErr) valid = false;
 
+    // Turnstile: the widget injects a hidden input named cf-turnstile-response.
+    // We just check it's non-empty — Turnstile handles the challenge itself.
+    if (hasTurnstile) {
+      var tokenInput = document.querySelector('input[name="cf-turnstile-response"]');
+      var tokenVal   = tokenInput ? tokenInput.value.trim() : '';
+      if (!tokenVal) {
+        showError('turnstile', true);
+        valid = false;
+      } else {
+        showError('turnstile', false);
+      }
+    }
+
     return valid;
   }
 
-  // ── Submit handler ─────────────────────────────────────────────────────────
+  // ── Bind events ────────────────────────────────────────────────────────────
   if (form) {
     form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      if (!validateFields()) {
-        return;
+      if (!validateForm()) {
+        e.preventDefault();
       }
-
-      // If no reCAPTCHA configured, submit immediately
-      if (!siteKey) {
-        form.submit();
-        return;
-      }
-
-      // reCAPTCHA v3: execute silently and inject token before submitting
-      if (typeof grecaptcha === 'undefined') {
-        // Script not yet loaded — submit anyway (server will handle gracefully)
-        form.submit();
-        return;
-      }
-
-      // Disable button and show loading state
-      submitBtn.disabled = true;
-      if (submitLbl) submitLbl.textContent = <?php echo json_encode(JText::_('COM_REDEUFORM_BUTTON_SENDING')); ?>;
-
-      grecaptcha.ready(function () {
-        grecaptcha.execute(siteKey, { action: 'contact_form' }).then(function (token) {
-          var tokenField = document.getElementById('rf-recaptcha-token');
-          if (tokenField) {
-            tokenField.value = token;
-          }
-          form.submit();
-        }).catch(function () {
-          // Token fetch failed — re-enable button and show error
-          submitBtn.disabled = false;
-          if (submitLbl) submitLbl.textContent = <?php echo json_encode(JText::_('COM_REDEUFORM_BUTTON_SEND')); ?>;
-          showError('recaptcha', true);
-        });
-      });
     });
 
-    // Clear errors on input
     [
       { id: 'rf-name',    field: 'name' },
       { id: 'rf-email',   field: 'email' },
@@ -289,7 +265,7 @@
     ].forEach(function (item) {
       var el = document.getElementById(item.id);
       if (!el) return;
-      el.addEventListener('blur',  function () { validateFields(); });
+      el.addEventListener('blur',  function () { validateForm(); });
       el.addEventListener('input', function () {
         showError(item.field, false);
         setInputError(item.id, false);

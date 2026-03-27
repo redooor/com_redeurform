@@ -26,28 +26,20 @@
             default="From:    {name}&#10;Email:   {email}&#10;Phone:   {phone}&#10;&#10;Message:&#10;{message}&#10;&#10;---&#10;Sent to:   {receiving_email}&#10;Send-as:   {sendfrom_email}"
         />
     </fieldset>
-    <fieldset name="recaptcha" label="COM_REDEUFORM_SETTINGS_FIELDSET_RECAPTCHA">
+    <fieldset name="turnstile" label="COM_REDEUFORM_SETTINGS_FIELDSET_TURNSTILE">
         <field
-            name="recaptcha_site_key"
+            name="turnstile_site_key"
             type="text"
-            label="COM_REDEUFORM_PARAM_RECAPTCHA_SITE_KEY_LABEL"
-            description="COM_REDEUFORM_PARAM_RECAPTCHA_SITE_KEY_DESC"
+            label="COM_REDEUFORM_PARAM_TURNSTILE_SITE_KEY_LABEL"
+            description="COM_REDEUFORM_PARAM_TURNSTILE_SITE_KEY_DESC"
             size="60"
         />
         <field
-            name="recaptcha_secret_key"
+            name="turnstile_secret_key"
             type="text"
-            label="COM_REDEUFORM_PARAM_RECAPTCHA_SECRET_KEY_LABEL"
-            description="COM_REDEUFORM_PARAM_RECAPTCHA_SECRET_KEY_DESC"
+            label="COM_REDEUFORM_PARAM_TURNSTILE_SECRET_KEY_LABEL"
+            description="COM_REDEUFORM_PARAM_TURNSTILE_SECRET_KEY_DESC"
             size="60"
-        />
-        <field
-            name="recaptcha_threshold"
-            type="text"
-            label="COM_REDEUFORM_PARAM_RECAPTCHA_THRESHOLD_LABEL"
-            description="COM_REDEUFORM_PARAM_RECAPTCHA_THRESHOLD_DESC"
-            size="10"
-            default="0.5"
         />
     </fieldset>
 </form>

@@ -33,28 +33,20 @@ class RedeuformControllerForm extends JControllerLegacy
             $errors[] = JText::_('COM_REDEUFORM_ERROR_MESSAGE_TOO_LONG');
         }
 
-        // ── reCAPTCHA v3 verification ─────────────────────────────────────────
+        // ── Cloudflare Turnstile verification ─────────────────────────────────
         $params     = JComponentHelper::getParams('com_redeuform');
-        $siteKey    = trim($params->get('recaptcha_site_key', ''));
-        $secretKey  = trim($params->get('recaptcha_secret_key', ''));
+        $siteKey    = trim($params->get('turnstile_site_key', ''));
+        $secretKey  = trim($params->get('turnstile_secret_key', ''));
 
-        // reCAPTCHA is active only when BOTH keys are provided
-        $recaptchaEnabled = !empty($siteKey) && !empty($secretKey);
+        // Turnstile is active only when BOTH keys are provided
+        if (!empty($siteKey) && !empty($secretKey)) {
+            $token = $input->getString('cf-turnstile-response', '');
 
-        if ($recaptchaEnabled) {
-            $recaptchaToken = $input->getString('g-recaptcha-response', '');
-            $threshold      = (float) $params->get('recaptcha_threshold', '0.5');
-
-            if (empty($recaptchaToken)) {
-                $errors[] = JText::_('COM_REDEUFORM_ERROR_RECAPTCHA_REQUIRED');
+            if (empty($token)) {
+                $errors[] = JText::_('COM_REDEUFORM_ERROR_TURNSTILE_REQUIRED');
             } else {
-                $verifyResult = $this->verifyRecaptchaV3($secretKey, $recaptchaToken, $threshold);
-
-                if ($verifyResult === 'curl_failed') {
-                    // Could not reach Google — fail open, log a warning
-                    $app->enqueueMessage(JText::_('COM_REDEUFORM_WARNING_RECAPTCHA_SKIPPED'), 'warning');
-                } elseif ($verifyResult !== true) {
-                    // Explicit failure (low score, wrong action, bad token)
+                $verifyResult = $this->verifyTurnstile($secretKey, $token);
+                if ($verifyResult !== true) {
                     $errors[] = $verifyResult;
                 }
             }
@@ -81,14 +73,13 @@ class RedeuformControllerForm extends JControllerLegacy
     }
 
     /**
-     * Calls Google siteverify for reCAPTCHA v3.
+     * Verifies a Cloudflare Turnstile token against the siteverify endpoint.
      *
-     * Returns:
-     *   true          — token accepted
-     *   'curl_failed' — could not reach Google (network error)
-     *   string        — human-readable error message (token rejected)
+     * Returns true on success, or a string error message on failure.
+     * Turnstile siteverify works on localhost with no domain restrictions,
+     * so no bypass logic is needed.
      */
-    private function verifyRecaptchaV3($secretKey, $token, $threshold)
+    private function verifyTurnstile($secretKey, $token)
     {
         $postData = http_build_query(array(
             'secret'   => $secretKey,
@@ -98,18 +89,16 @@ class RedeuformControllerForm extends JControllerLegacy
 
         $ch = curl_init();
         curl_setopt_array($ch, array(
-            CURLOPT_URL            => 'https://www.google.com/recaptcha/api/siteverify',
+            CURLOPT_URL            => 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $postData,
-            // Send data as application/x-www-form-urlencoded, not multipart
             CURLOPT_HTTPHEADER     => array('Content-Type: application/x-www-form-urlencoded'),
             CURLOPT_TIMEOUT        => 10,
             CURLOPT_CONNECTTIMEOUT => 5,
-            // Accept Google's certificate on systems with outdated CA bundles
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
-            CURLOPT_USERAGENT      => 'Mozilla/5.0 (compatible; com_redeuform/1.0.5)',
+            CURLOPT_USERAGENT      => 'com_redeuform/1.0.7',
         ));
 
         $response  = curl_exec($ch);
@@ -118,44 +107,29 @@ class RedeuformControllerForm extends JControllerLegacy
         curl_close($ch);
 
         if ($curlErrno !== 0 || $response === false) {
-            // Network/TLS error — caller decides whether to fail open or closed
+            // Log cURL error but fail open so legitimate users are not blocked
             JFactory::getApplication()->enqueueMessage(
-                'reCAPTCHA cURL error ' . $curlErrno . ': ' . $curlError, 'warning'
+                JText::sprintf('COM_REDEUFORM_WARNING_TURNSTILE_CURL', $curlErrno, $curlError),
+                'warning'
             );
-            return 'curl_failed';
+            return true;
         }
 
         $result = json_decode($response, true);
 
-        if (empty($result) || !is_array($result)) {
-            return JText::_('COM_REDEUFORM_ERROR_RECAPTCHA_FAILED');
-        }
-
-        // Log full result in debug mode to help diagnose environment issues
         if (JDEBUG) {
             JFactory::getApplication()->enqueueMessage(
-                'reCAPTCHA result: ' . print_r($result, true), 'notice'
+                'Turnstile result: ' . print_r($result, true), 'notice'
             );
         }
 
+        if (empty($result) || !is_array($result)) {
+            return JText::_('COM_REDEUFORM_ERROR_TURNSTILE_FAILED');
+        }
+
         if (empty($result['success'])) {
-            $errorCodes = isset($result['error-codes']) ? implode(', ', $result['error-codes']) : 'unknown';
-            // timeout-or-duplicate and invalid-input-response are token issues
-            // browser-error usually means the token reached the server mangled
-            return JText::sprintf('COM_REDEUFORM_ERROR_RECAPTCHA_FAILED_CODE', $errorCodes);
-        }
-
-        // Score check (threshold = 0 disables score filtering entirely)
-        $score = isset($result['score']) ? (float) $result['score'] : 0.0;
-        if ($threshold > 0 && $score < $threshold) {
-            return JText::_('COM_REDEUFORM_ERROR_RECAPTCHA_FAILED');
-        }
-
-        // Action check — only enforce if Google returned one
-        // (some server configs strip or do not return the action field)
-        $returnedAction = isset($result['action']) ? $result['action'] : '';
-        if (!empty($returnedAction) && $returnedAction !== 'contact_form') {
-            return JText::_('COM_REDEUFORM_ERROR_RECAPTCHA_FAILED');
+            $codes = isset($result['error-codes']) ? implode(', ', (array) $result['error-codes']) : 'unknown';
+            return JText::sprintf('COM_REDEUFORM_ERROR_TURNSTILE_FAILED_CODE', $codes);
         }
 
         return true;
