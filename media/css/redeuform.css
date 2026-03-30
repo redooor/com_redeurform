@@ -38,23 +38,6 @@
     margin-bottom: 40px;
 }
 
-#redeuform-app .rf-icon-wrap {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 64px;
-    height: 64px;
-    border-radius: 18px;
-    background: #4e9d6d;
-    margin-bottom: 16px;
-    box-shadow: 0 8px 24px rgba(78,157,109,.30);
-}
-
-#redeuform-app .rf-icon-wrap svg {
-    width: 32px;
-    height: 32px;
-    stroke: #f6eb14;
-}
 
 #redeuform-app .rf-title {
     font-family: Georgia, "Times New Roman", serif;
@@ -70,44 +53,6 @@
     color: #666666;
 }
 
-/* ── System messages ─────────────────────────────────────────────────────────── */
-#redeuform-app .rf-messages {
-    margin-bottom: 24px;
-}
-
-#redeuform-app .rf-message {
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 12px;
-    padding: 12px 16px;
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 8px;
-}
-
-#redeuform-app .rf-message--info {
-    background: #eef7f2;
-    border-color: #b3dcc4;
-    color: #2d6b47;
-}
-
-#redeuform-app .rf-message--success {
-    background: #eef7f2;
-    border-color: #4e9d6d;
-    color: #2d6b47;
-}
-
-#redeuform-app .rf-message--error {
-    background: #fff2f2;
-    border-color: #ffb3b3;
-    color: #cc0000;
-}
-
-#redeuform-app .rf-message--warning {
-    background: #fefde8;
-    border-color: #f6eb14;
-    color: #7a7200;
-}
 
 /* ── Card ────────────────────────────────────────────────────────────────────── */
 #redeuform-app .rf-card {

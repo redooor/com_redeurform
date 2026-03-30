@@ -5,32 +5,9 @@
 
     <!-- Header -->
     <div class="rf-header">
-      <div class="rf-icon-wrap">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5H4.5a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-        </svg>
-      </div>
       <h1 class="rf-title"><?php echo JText::_('COM_REDEUFORM_TITLE'); ?></h1>
       <p class="rf-subtitle"><?php echo JText::_('COM_REDEUFORM_SUBTITLE'); ?></p>
     </div>
-
-    <!-- System messages -->
-    <?php $messages = JFactory::getApplication()->getMessageQueue(); ?>
-    <?php if (!empty($messages)): ?>
-      <div class="rf-messages">
-        <?php foreach ($messages as $msg): ?>
-          <?php
-            $cls = 'rf-message--info';
-            if ($msg['type'] === 'error')   $cls = 'rf-message--error';
-            if ($msg['type'] === 'message') $cls = 'rf-message--success';
-            if ($msg['type'] === 'warning') $cls = 'rf-message--warning';
-          ?>
-          <div class="rf-message <?php echo $cls; ?>">
-            <?php echo htmlspecialchars($msg['message']); ?>
-          </div>
-        <?php endforeach; ?>
-      </div>
-    <?php endif; ?>
 
     <!-- Card -->
     <div class="rf-card">
