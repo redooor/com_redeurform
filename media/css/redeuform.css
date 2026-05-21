@@ -1,12 +1,37 @@
 /*
- * com_redeuform – self-contained component styles v1.0.3
- * Primary:   #4e9d6d (green)
- * Secondary: #f6eb14 (yellow)
- * Background: #ffffff (white)
- * All rules scoped to #redeuform-app.
+ * com_redeuform – component styles v1.0.9
+ * Copyright (C) 2026 Redooor LLP. All rights reserved.
+ *
+ * All colours are driven by CSS custom properties injected by
+ * site/views/redeuform/view.html.php from admin-configured params.
+ * Defaults here match the factory values so the form looks correct
+ * even if the <style> injection is somehow absent.
+ *
+ * Primary:    --rf-primary      (default #4e9d6d  green)
+ * Secondary:  --rf-secondary    (default #f6eb14  yellow)
+ * Background: --rf-bg           (default #ffffff  white)
+ * Text:       --rf-text         (default #1a1a1a)
+ * Labels:     --rf-label        (default #4e9d6d)
+ * Button bg:  --rf-btn-bg       (default #4e9d6d)
+ * Button text:--rf-btn-text     (default #ffffff)
+ * Accent bar: --rf-accent1/2/3  (default green → light green → yellow)
  */
 
-/* ── Reset & box model ─────────────────────────────────────────────────────── */
+/* ── Default custom property values ─────────────────────────────────────────── */
+#redeuform-app {
+    --rf-primary:      #4e9d6d;
+    --rf-secondary:    #f6eb14;
+    --rf-bg:           #ffffff;
+    --rf-text:         #1a1a1a;
+    --rf-label:        #4e9d6d;
+    --rf-btn-bg:       #4e9d6d;
+    --rf-btn-text:     #ffffff;
+    --rf-accent1:      #4e9d6d;
+    --rf-accent2:      #6db88a;
+    --rf-accent3:      #f6eb14;
+}
+
+/* ── Reset & box model ───────────────────────────────────────────────────────── */
 #redeuform-app *,
 #redeuform-app *::before,
 #redeuform-app *::after {
@@ -17,12 +42,12 @@
 
 /* ── Wrapper ─────────────────────────────────────────────────────────────────── */
 #redeuform-app {
-    background: #ffffff;
-    /* padding: 48px 16px; */
+    background: var(--rf-bg);
+    padding: 48px 16px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 1.5;
-    color: #1a1a1a;
+    color: var(--rf-text);
     -webkit-font-smoothing: antialiased;
 }
 
@@ -38,12 +63,11 @@
     margin-bottom: 40px;
 }
 
-
 #redeuform-app .rf-title {
     font-family: Georgia, "Times New Roman", serif;
     font-size: 28px;
     font-weight: 700;
-    color: #4e9d6d;
+    color: var(--rf-primary);
     letter-spacing: -0.5px;
     margin-bottom: 8px;
 }
@@ -53,19 +77,18 @@
     color: #666666;
 }
 
-
 /* ── Card ────────────────────────────────────────────────────────────────────── */
 #redeuform-app .rf-card {
     background: #ffffff;
     border-radius: 24px;
     border: 1px solid #e0e0e0;
-    box-shadow: 0 4px 32px rgba(78,157,109,.10), 0 1px 4px rgba(0,0,0,.04);
+    box-shadow: 0 4px 32px rgba(0,0,0,.07), 0 1px 4px rgba(0,0,0,.04);
     overflow: hidden;
 }
 
 #redeuform-app .rf-card-accent {
     height: 5px;
-    background: linear-gradient(to right, #4e9d6d, #6db88a, #f6eb14);
+    background: linear-gradient(to right, var(--rf-accent1), var(--rf-accent2), var(--rf-accent3));
 }
 
 #redeuform-app .rf-card-body {
@@ -73,9 +96,7 @@
 }
 
 @media (max-width: 480px) {
-    #redeuform-app .rf-card-body {
-        padding: 24px 20px;
-    }
+    #redeuform-app .rf-card-body { padding: 24px 20px; }
 }
 
 /* ── Form ────────────────────────────────────────────────────────────────────── */
@@ -98,7 +119,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #4e9d6d;
+    color: var(--rf-label);
 }
 
 #redeuform-app .rf-required {
@@ -123,7 +144,7 @@
     border-radius: 12px;
     border: 1px solid #d0d0d0;
     background: #fafafa;
-    color: #1a1a1a;
+    color: var(--rf-text);
     font-family: inherit;
     font-size: 14px;
     line-height: 1.5;
@@ -141,15 +162,23 @@
 
 #redeuform-app .rf-input:focus,
 #redeuform-app .rf-textarea:focus {
-    border-color: #4e9d6d;
-    box-shadow: 0 0 0 3px rgba(78,157,109,.18);
+    border-color: var(--rf-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rf-primary) 18%, transparent);
     background: #ffffff;
+}
+
+/* Fallback for browsers without color-mix (Joomla 3 era browsers) */
+@supports not (color: color-mix(in srgb, red 50%, blue)) {
+    #redeuform-app .rf-input:focus,
+    #redeuform-app .rf-textarea:focus {
+        box-shadow: 0 0 0 3px rgba(78, 157, 109, 0.18);
+    }
 }
 
 #redeuform-app .rf-input.rf-input--error,
 #redeuform-app .rf-textarea.rf-input--error {
     border-color: #cc0000;
-    box-shadow: 0 0 0 3px rgba(204,0,0,.10);
+    box-shadow: 0 0 0 3px rgba(204, 0, 0, .10);
 }
 
 #redeuform-app .rf-textarea {
@@ -157,7 +186,7 @@
     min-height: 120px;
 }
 
-/* ── Message footer (error + counter row) ────────────────────────────────────── */
+/* ── Message footer row ──────────────────────────────────────────────────────── */
 #redeuform-app .rf-field-footer {
     display: flex;
     justify-content: space-between;
@@ -165,7 +194,7 @@
     min-height: 18px;
 }
 
-/* ── Inline validation errors ────────────────────────────────────────────────── */
+/* ── Validation errors ───────────────────────────────────────────────────────── */
 #redeuform-app .rf-error {
     font-size: 12px;
     font-weight: 500;
@@ -185,19 +214,11 @@
     white-space: nowrap;
 }
 
-#redeuform-app .rf-counter--limit {
-    color: #cc0000;
-}
+#redeuform-app .rf-counter--limit { color: #cc0000; }
 
-/* ── reCAPTCHA ───────────────────────────────────────────────────────────────── */
-#redeuform-app .rf-recaptcha-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
+/* ── Turnstile ───────────────────────────────────────────────────────────────── */
 @media (max-width: 380px) {
-    #redeuform-app .rf-recaptcha-wrap .g-recaptcha {
+    #redeuform-app .cf-turnstile {
         transform: scale(0.88);
         transform-origin: 0 0;
     }
@@ -213,15 +234,15 @@
     padding: 14px 24px;
     border-radius: 12px;
     border: none;
-    background: #4e9d6d;
-    color: #ffffff;
+    background: var(--rf-btn-bg);
+    color: var(--rf-btn-text);
     font-family: inherit;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.03em;
     cursor: pointer;
-    transition: background .18s ease, box-shadow .18s ease, transform .15s ease;
-    box-shadow: 0 4px 16px rgba(78,157,109,.35);
+    transition: filter .18s ease, box-shadow .18s ease, transform .15s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .15);
     -webkit-appearance: none;
     appearance: none;
 }
@@ -229,25 +250,39 @@
 #redeuform-app .rf-submit svg {
     width: 16px;
     height: 16px;
-    stroke: #f6eb14;
+    stroke: var(--rf-btn-text);
     flex-shrink: 0;
 }
 
 #redeuform-app .rf-submit:hover {
-    background: #3d8a5a;
-    box-shadow: 0 6px 20px rgba(78,157,109,.45);
+    filter: brightness(0.9);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .20);
     transform: translateY(-1px);
 }
 
 #redeuform-app .rf-submit:active {
-    background: #2f7047;
+    filter: brightness(0.8);
     transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(78,157,109,.25);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
 }
 
 #redeuform-app .rf-submit:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(246,235,20,.60);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rf-secondary) 60%, transparent);
+}
+
+@supports not (color: color-mix(in srgb, red 50%, blue)) {
+    #redeuform-app .rf-submit:focus {
+        box-shadow: 0 0 0 3px rgba(246, 235, 20, 0.60);
+    }
+}
+
+#redeuform-app .rf-submit:disabled {
+    filter: none;
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 /* ── Footer note ─────────────────────────────────────────────────────────────── */
@@ -256,21 +291,4 @@
     font-size: 12px;
     color: #aaaaaa;
     margin-top: 24px;
-}
-
-/* ── reCAPTCHA v3 badge note ─────────────────────────────────────────────────── */
-#redeuform-app .rf-recaptcha-note {
-    font-size: 11px;
-    color: #aaaaaa;
-    text-align: center;
-    margin-top: -8px;
-}
-
-/* ── Disabled submit state ───────────────────────────────────────────────────── */
-#redeuform-app .rf-submit:disabled {
-    background: #a0c8b4;
-    box-shadow: none;
-    transform: none;
-    cursor: not-allowed;
-    opacity: 0.75;
 }

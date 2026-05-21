@@ -1,11 +1,19 @@
-<?php defined('_JEXEC') or die; ?>
+<?php defined('_JEXEC') or die;
 
+$isJ4 = RedeuformHelper::isJoomla4();
+?>
+
+<?php if (!$isJ4 && !empty($this->sidebar)): ?>
 <div id="j-sidebar-container" class="span2">
     <?php echo $this->sidebar; ?>
 </div>
-
 <div id="j-main-container" class="span10">
-    <form action="<?php echo JRoute::_('index.php?option=com_redeuform&view=redeuform'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<?php else: ?>
+<div id="j-main-container">
+<?php endif; ?>
+
+    <form action="<?php echo JRoute::_('index.php?option=com_redeuform&view=redeuform'); ?>"
+          method="post" name="adminForm" id="adminForm" class="form-validate">
 
         <?php foreach ($this->form->getFieldsets() as $fieldset): ?>
         <div class="control-group">
@@ -53,54 +61,73 @@
         if (empty($sendFrom)) {
             $sendFrom = $jConfig->get('mailfrom', '—') . ' ' . JText::_('COM_REDEUFORM_MAIL_DIAG_GLOBAL_FALLBACK');
         }
-        $tsiteKey   = trim($params->get('turnstile_site_key', ''));
-        $tsecretKey = trim($params->get('turnstile_secret_key', ''));
+        $tsiteKey       = trim($params->get('turnstile_site_key', ''));
+        $tsecretKey     = trim($params->get('turnstile_secret_key', ''));
         $turnstileActive = !empty($tsiteKey) && !empty($tsecretKey);
     ?>
 
     <table class="table table-striped table-condensed" style="max-width:640px;">
         <tbody>
-            <tr><th style="width:240px;"><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_JOOMLA_MAILER'); ?></th>
-                <td><code><?php echo htmlspecialchars($mailerType); ?></code></td></tr>
-            <tr><th><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_SMTP_HOST'); ?></th>
-                <td><code><?php echo htmlspecialchars($smtpHost); ?></code></td></tr>
-            <tr><th><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_SMTP_PORT'); ?></th>
-                <td><code><?php echo htmlspecialchars($smtpPort); ?></code></td></tr>
-            <tr><th><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_SMTP_AUTH'); ?></th>
-                <td><?php echo $smtpAuth; ?></td></tr>
-            <tr><th><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_GLOBAL_FROM'); ?></th>
+            <tr>
+                <th style="width:240px;"><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_JOOMLA_MAILER'); ?></th>
+                <td><code><?php echo htmlspecialchars($mailerType); ?></code></td>
+            </tr>
+            <tr>
+                <th><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_SMTP_HOST'); ?></th>
+                <td><code><?php echo htmlspecialchars($smtpHost); ?></code></td>
+            </tr>
+            <tr>
+                <th><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_SMTP_PORT'); ?></th>
+                <td><code><?php echo htmlspecialchars($smtpPort); ?></code></td>
+            </tr>
+            <tr>
+                <th><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_SMTP_AUTH'); ?></th>
+                <td><?php echo $smtpAuth; ?></td>
+            </tr>
+            <tr>
+                <th><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_GLOBAL_FROM'); ?></th>
                 <td><code><?php echo htmlspecialchars($mailFrom); ?></code>
-                    &nbsp;(<?php echo htmlspecialchars($fromName); ?>)</td></tr>
-            <tr><th><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_EFFECTIVE_FROM'); ?></th>
-                <td><code><?php echo htmlspecialchars($sendFrom); ?></code></td></tr>
-            <tr><th><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_RECEIVING'); ?></th>
+                    &nbsp;(<?php echo htmlspecialchars($fromName); ?>)</td>
+            </tr>
+            <tr>
+                <th><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_EFFECTIVE_FROM'); ?></th>
+                <td><code><?php echo htmlspecialchars($sendFrom); ?></code></td>
+            </tr>
+            <tr>
+                <th><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_RECEIVING'); ?></th>
                 <td><?php if ($toEmail): ?>
                     <code><?php echo htmlspecialchars($toEmail); ?></code>
                 <?php else: ?>
                     <span class="label label-warning"><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_NOT_SET'); ?></span>
-                <?php endif; ?></td></tr>
-            <tr><th><?php echo JText::_('COM_REDEUFORM_DIAG_TURNSTILE_STATUS'); ?></th>
+                <?php endif; ?></td>
+            </tr>
+            <tr>
+                <th><?php echo JText::_('COM_REDEUFORM_DIAG_TURNSTILE_STATUS'); ?></th>
                 <td><?php if ($turnstileActive): ?>
                     <span class="label label-success"><?php echo JText::_('COM_REDEUFORM_DIAG_TURNSTILE_ACTIVE'); ?></span>
                 <?php else: ?>
                     <span class="label label-default"><?php echo JText::_('COM_REDEUFORM_DIAG_TURNSTILE_DISABLED'); ?></span>
-                <?php endif; ?></td></tr>
+                <?php endif; ?></td>
+            </tr>
         </tbody>
     </table>
 
     <p class="help-block"><?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_HERD_HINT'); ?></p>
     <p class="help-block"><?php echo JText::_('COM_REDEUFORM_DIAG_TURNSTILE_HINT'); ?></p>
 
-    <!-- Test-send button -->
-    <form action="<?php echo JRoute::_('index.php?option=com_redeuform&task=redeuform.testEmail'); ?>" method="post" style="margin-top:12px;">
+    <form action="<?php echo JRoute::_('index.php?option=com_redeuform&task=redeuform.testEmail'); ?>"
+          method="post" style="margin-top:12px;">
         <?php echo JHtml::_('form.token'); ?>
         <button type="submit" class="btn btn-default"
-            <?php if (empty($toEmail)): ?>disabled="disabled" title="<?php echo JText::_('COM_REDEUFORM_MAIL_DIAG_NOT_SET'); ?>"<?php endif; ?>>
+            <?php if (empty($toEmail)): ?>disabled="disabled"<?php endif; ?>>
             <span class="icon-mail"></span>
             <?php echo JText::_('COM_REDEUFORM_TEST_EMAIL_BUTTON'); ?>
         </button>
         <?php if (!empty($toEmail)): ?>
-        <span class="help-inline"><?php echo JText::sprintf('COM_REDEUFORM_TEST_EMAIL_WILL_SEND_TO', htmlspecialchars($toEmail)); ?></span>
+        <span class="help-inline">
+            <?php echo JText::sprintf('COM_REDEUFORM_TEST_EMAIL_WILL_SEND_TO', htmlspecialchars($toEmail)); ?>
+        </span>
         <?php endif; ?>
     </form>
+
 </div>

@@ -1,1 +1,1 @@
--- 1.0.6: Author updated to Redooor LLP; fixed email sender/recipient/reply-to; added receiving_email and sendfrom_email placeholders; added mail diagnostics panel and test-send button
+-- 1.0.6

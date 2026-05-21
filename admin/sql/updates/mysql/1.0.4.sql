@@ -1,1 +1,1 @@
--- 1.0.4: Upgraded reCAPTCHA v2 checkbox to v3 invisible scoring — no schema changes
+-- 1.0.4

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
+
+    <!-- ── Email configuration ──────────────────────────────────────────────── -->
     <fieldset name="basic" label="COM_REDEUFORM_SETTINGS_FIELDSET_EMAIL">
         <field
             name="receiving_email"
@@ -26,6 +28,8 @@
             default="From:    {name}&#10;Email:   {email}&#10;Phone:   {phone}&#10;&#10;Message:&#10;{message}&#10;&#10;---&#10;Sent to:   {receiving_email}&#10;Send-as:   {sendfrom_email}"
         />
     </fieldset>
+
+    <!-- ── Cloudflare Turnstile ─────────────────────────────────────────────── -->
     <fieldset name="turnstile" label="COM_REDEUFORM_SETTINGS_FIELDSET_TURNSTILE">
         <field
             name="turnstile_site_key"
@@ -42,4 +46,79 @@
             size="60"
         />
     </fieldset>
+
+    <!-- ── Colour scheme ────────────────────────────────────────────────────── -->
+    <fieldset name="colours" label="COM_REDEUFORM_SETTINGS_FIELDSET_COLOURS">
+        <field
+            name="color_primary"
+            type="color"
+            label="COM_REDEUFORM_PARAM_COLOR_PRIMARY_LABEL"
+            description="COM_REDEUFORM_PARAM_COLOR_PRIMARY_DESC"
+            default="#4e9d6d"
+        />
+        <field
+            name="color_secondary"
+            type="color"
+            label="COM_REDEUFORM_PARAM_COLOR_SECONDARY_LABEL"
+            description="COM_REDEUFORM_PARAM_COLOR_SECONDARY_DESC"
+            default="#f6eb14"
+        />
+        <field
+            name="color_background"
+            type="color"
+            label="COM_REDEUFORM_PARAM_COLOR_BACKGROUND_LABEL"
+            description="COM_REDEUFORM_PARAM_COLOR_BACKGROUND_DESC"
+            default="#ffffff"
+        />
+        <field
+            name="color_text"
+            type="color"
+            label="COM_REDEUFORM_PARAM_COLOR_TEXT_LABEL"
+            description="COM_REDEUFORM_PARAM_COLOR_TEXT_DESC"
+            default="#1a1a1a"
+        />
+        <field
+            name="color_label"
+            type="color"
+            label="COM_REDEUFORM_PARAM_COLOR_LABEL_LABEL"
+            description="COM_REDEUFORM_PARAM_COLOR_LABEL_DESC"
+            default="#4e9d6d"
+        />
+        <field
+            name="color_button"
+            type="color"
+            label="COM_REDEUFORM_PARAM_COLOR_BUTTON_LABEL"
+            description="COM_REDEUFORM_PARAM_COLOR_BUTTON_DESC"
+            default="#4e9d6d"
+        />
+        <field
+            name="color_button_text"
+            type="color"
+            label="COM_REDEUFORM_PARAM_COLOR_BUTTON_TEXT_LABEL"
+            description="COM_REDEUFORM_PARAM_COLOR_BUTTON_TEXT_DESC"
+            default="#ffffff"
+        />
+        <field
+            name="color_accent1"
+            type="color"
+            label="COM_REDEUFORM_PARAM_COLOR_ACCENT1_LABEL"
+            description="COM_REDEUFORM_PARAM_COLOR_ACCENT1_DESC"
+            default="#4e9d6d"
+        />
+        <field
+            name="color_accent2"
+            type="color"
+            label="COM_REDEUFORM_PARAM_COLOR_ACCENT2_LABEL"
+            description="COM_REDEUFORM_PARAM_COLOR_ACCENT2_DESC"
+            default="#6db88a"
+        />
+        <field
+            name="color_accent3"
+            type="color"
+            label="COM_REDEUFORM_PARAM_COLOR_ACCENT3_LABEL"
+            description="COM_REDEUFORM_PARAM_COLOR_ACCENT3_DESC"
+            default="#f6eb14"
+        />
+    </fieldset>
+
 </form>

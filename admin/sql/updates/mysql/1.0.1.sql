@@ -1,1 +1,1 @@
--- 1.0.1: Tailwind CDN fix (tw- prefix) and CSS isolation — no schema changes
+-- 1.0.1

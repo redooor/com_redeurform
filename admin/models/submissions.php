@@ -16,10 +16,8 @@ class RedeuformModelSubmissions extends JModelList
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
 
-        $query->select('*')
-              ->from($db->quoteName('#__redeuform_submissions'));
+        $query->select('*')->from($db->quoteName('#__redeuform_submissions'));
 
-        // Search filter
         $search = $this->getState('filter.search');
         if (!empty($search)) {
             $search = $db->quote('%' . $db->escape($search, true) . '%');
@@ -27,7 +25,6 @@ class RedeuformModelSubmissions extends JModelList
                           ' OR ' . $db->quoteName('email') . ' LIKE ' . $search . ')');
         }
 
-        // Ordering
         $orderCol = $this->state->get('list.ordering', 'created_at');
         $orderDir = $this->state->get('list.direction', 'desc');
         $query->order($db->escape($orderCol) . ' ' . $db->escape($orderDir));

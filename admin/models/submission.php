@@ -10,7 +10,7 @@ class RedeuformModelSubmission extends JModelAdmin
 
     public function getForm($data = array(), $loadData = true)
     {
-        return false; // No form editing for submissions
+        return false;
     }
 
     protected function canDelete($record)

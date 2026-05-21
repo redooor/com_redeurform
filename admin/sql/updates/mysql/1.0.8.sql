@@ -1,1 +1,1 @@
--- 1.0.8: Removed SVG icon and system messages from site form template; removed unused icon and messages CSS
+-- 1.0.8

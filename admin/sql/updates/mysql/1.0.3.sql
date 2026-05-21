@@ -1,1 +1,1 @@
--- 1.0.3: Updated colour scheme to primary #4e9d6d / secondary #f6eb14 on white — no schema changes
+-- 1.0.3

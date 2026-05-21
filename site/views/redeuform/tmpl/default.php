@@ -105,7 +105,7 @@
               data-theme="light"
               data-size="normal"
             ></div>
-            <span class="rf-error" id="rf-turnstile-error" data-field="turnstile" style="display:none;">
+            <span class="rf-error" data-field="turnstile" style="display:none;">
               <?php echo JText::_('COM_REDEUFORM_ERROR_TURNSTILE_REQUIRED'); ?>
             </span>
           </div>
@@ -126,7 +126,6 @@
       </div>
     </div>
 
-    <!-- Footer note -->
     <p class="rf-footer-note"><?php echo JText::_('COM_REDEUFORM_PRIVACY_NOTE'); ?></p>
 
   </div>
@@ -141,61 +140,42 @@
   var counter = document.getElementById('rf-char-count');
   var hasTurnstile = <?php echo !empty($this->siteKey) ? 'true' : 'false'; ?>;
 
-  // ── Character counter ──────────────────────────────────────────────────────
   if (msgArea && counter) {
     msgArea.addEventListener('input', function () {
       var len = msgArea.value.length;
       counter.textContent = len + '/255';
-      if (len >= 255) {
-        counter.classList.add('rf-counter--limit');
-      } else {
-        counter.classList.remove('rf-counter--limit');
-      }
+      counter.classList.toggle('rf-counter--limit', len >= 255);
     });
   }
 
-  // ── Error helpers ──────────────────────────────────────────────────────────
   function showError(field, show) {
     var el = document.querySelector('.rf-error[data-field="' + field + '"]');
     if (!el) return;
     el.style.display = show ? 'block' : 'none';
-    if (show) {
-      el.classList.add('rf-error--visible');
-    } else {
-      el.classList.remove('rf-error--visible');
-    }
+    el.classList.toggle('rf-error--visible', show);
   }
 
   function setInputError(id, hasError) {
     var el = document.getElementById(id);
-    if (!el) return;
-    if (hasError) {
-      el.classList.add('rf-input--error');
-    } else {
-      el.classList.remove('rf-input--error');
-    }
+    if (el) el.classList.toggle('rf-input--error', hasError);
   }
 
   function validateEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
-  // ── Form validation ────────────────────────────────────────────────────────
   function validateForm() {
-    var valid = true;
-
+    var valid    = true;
     var nameVal  = document.getElementById('rf-name').value.trim();
     var emailVal = document.getElementById('rf-email').value.trim();
     var msgVal   = msgArea ? msgArea.value.trim() : '';
 
     var nameErr = !nameVal;
-    showError('name', nameErr);
-    setInputError('rf-name', nameErr);
+    showError('name', nameErr); setInputError('rf-name', nameErr);
     if (nameErr) valid = false;
 
     var emailErr = !emailVal || !validateEmail(emailVal);
-    showError('email', emailErr);
-    setInputError('rf-email', emailErr);
+    showError('email', emailErr); setInputError('rf-email', emailErr);
     if (emailErr) valid = false;
 
     var msgErrEl = document.querySelector('.rf-error[data-field="message"]');
@@ -207,32 +187,22 @@
       msgErr = true;
       if (msgErrEl) msgErrEl.textContent = <?php echo json_encode(JText::_('COM_REDEUFORM_ERROR_MESSAGE_TOO_LONG')); ?>;
     }
-    showError('message', msgErr);
-    setInputError('rf-message', msgErr);
+    showError('message', msgErr); setInputError('rf-message', msgErr);
     if (msgErr) valid = false;
 
-    // Turnstile: the widget injects a hidden input named cf-turnstile-response.
-    // We just check it's non-empty — Turnstile handles the challenge itself.
     if (hasTurnstile) {
       var tokenInput = document.querySelector('input[name="cf-turnstile-response"]');
-      var tokenVal   = tokenInput ? tokenInput.value.trim() : '';
-      if (!tokenVal) {
-        showError('turnstile', true);
-        valid = false;
-      } else {
-        showError('turnstile', false);
-      }
+      var hasToken   = tokenInput && tokenInput.value.trim().length > 0;
+      showError('turnstile', !hasToken);
+      if (!hasToken) valid = false;
     }
 
     return valid;
   }
 
-  // ── Bind events ────────────────────────────────────────────────────────────
   if (form) {
     form.addEventListener('submit', function (e) {
-      if (!validateForm()) {
-        e.preventDefault();
-      }
+      if (!validateForm()) e.preventDefault();
     });
 
     [
@@ -242,7 +212,7 @@
     ].forEach(function (item) {
       var el = document.getElementById(item.id);
       if (!el) return;
-      el.addEventListener('blur',  function () { validateForm(); });
+      el.addEventListener('blur',  validateForm);
       el.addEventListener('input', function () {
         showError(item.field, false);
         setInputError(item.id, false);

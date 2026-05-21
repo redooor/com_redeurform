@@ -34,14 +34,12 @@ class RedeuformControllerForm extends JControllerLegacy
         }
 
         // ── Cloudflare Turnstile verification ─────────────────────────────────
-        $params     = JComponentHelper::getParams('com_redeuform');
-        $siteKey    = trim($params->get('turnstile_site_key', ''));
-        $secretKey  = trim($params->get('turnstile_secret_key', ''));
+        $params    = JComponentHelper::getParams('com_redeuform');
+        $siteKey   = trim($params->get('turnstile_site_key', ''));
+        $secretKey = trim($params->get('turnstile_secret_key', ''));
 
-        // Turnstile is active only when BOTH keys are provided
         if (!empty($siteKey) && !empty($secretKey)) {
             $token = $input->getString('cf-turnstile-response', '');
-
             if (empty($token)) {
                 $errors[] = JText::_('COM_REDEUFORM_ERROR_TURNSTILE_REQUIRED');
             } else {
@@ -60,7 +58,6 @@ class RedeuformControllerForm extends JControllerLegacy
             return;
         }
 
-        // ── Save and send email ───────────────────────────────────────────────
         $data['ip_address'] = $app->input->server->getString('REMOTE_ADDR', '');
         if ($model->saveSubmission($data)) {
             $model->sendEmail($data);
@@ -72,13 +69,6 @@ class RedeuformControllerForm extends JControllerLegacy
         $app->redirect(JRoute::_('index.php?option=com_redeuform&view=redeuform', false));
     }
 
-    /**
-     * Verifies a Cloudflare Turnstile token against the siteverify endpoint.
-     *
-     * Returns true on success, or a string error message on failure.
-     * Turnstile siteverify works on localhost with no domain restrictions,
-     * so no bypass logic is needed.
-     */
     private function verifyTurnstile($secretKey, $token)
     {
         $postData = http_build_query(array(
@@ -98,7 +88,7 @@ class RedeuformControllerForm extends JControllerLegacy
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
-            CURLOPT_USERAGENT      => 'com_redeuform/1.0.7',
+            CURLOPT_USERAGENT      => 'com_redeuform/1.0.9',
         ));
 
         $response  = curl_exec($ch);
@@ -107,12 +97,11 @@ class RedeuformControllerForm extends JControllerLegacy
         curl_close($ch);
 
         if ($curlErrno !== 0 || $response === false) {
-            // Log cURL error but fail open so legitimate users are not blocked
             JFactory::getApplication()->enqueueMessage(
                 JText::sprintf('COM_REDEUFORM_WARNING_TURNSTILE_CURL', $curlErrno, $curlError),
                 'warning'
             );
-            return true;
+            return true; // fail open on network error
         }
 
         $result = json_decode($response, true);
@@ -128,7 +117,9 @@ class RedeuformControllerForm extends JControllerLegacy
         }
 
         if (empty($result['success'])) {
-            $codes = isset($result['error-codes']) ? implode(', ', (array) $result['error-codes']) : 'unknown';
+            $codes = isset($result['error-codes'])
+                ? implode(', ', (array) $result['error-codes'])
+                : 'unknown';
             return JText::sprintf('COM_REDEUFORM_ERROR_TURNSTILE_FAILED_CODE', $codes);
         }
 

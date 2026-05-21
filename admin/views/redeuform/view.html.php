@@ -14,7 +14,10 @@ class RedeuformViewRedeuform extends JViewLegacy
         RedeuformHelper::addSubmenu('redeuform');
 
         $this->addToolbar();
-        $this->sidebar = JHtmlSidebar::render();
+
+        if (!RedeuformHelper::isJoomla4() && class_exists('JHtmlSidebar')) {
+            $this->sidebar = JHtmlSidebar::render();
+        }
 
         parent::display($tpl);
     }

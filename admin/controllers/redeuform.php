@@ -31,10 +31,6 @@ class RedeuformControllerRedeuform extends JControllerForm
         }
     }
 
-    /**
-     * Sends a test email using the current component settings.
-     * Accessible via task=redeuform.testEmail
-     */
     public function testEmail()
     {
         JSession::checkToken('get') or JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));

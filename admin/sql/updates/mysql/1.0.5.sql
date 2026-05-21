@@ -1,1 +1,1 @@
--- 1.0.5: Fix cURL POST encoding, both-keys-required logic, corrected v3 language strings, relaxed action check
+-- 1.0.5

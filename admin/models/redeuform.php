@@ -10,7 +10,11 @@ class RedeuformModelRedeuform extends JModelAdmin
 
     public function getForm($data = array(), $loadData = true)
     {
-        $form = $this->loadForm('com_redeuform.redeuform', 'redeuform', array('control' => 'jform', 'load_data' => $loadData));
+        $form = $this->loadForm(
+            'com_redeuform.redeuform',
+            'redeuform',
+            array('control' => 'jform', 'load_data' => $loadData)
+        );
         return $form;
     }
 
@@ -26,7 +30,7 @@ class RedeuformModelRedeuform extends JModelAdmin
             $params->set($key, $value);
         }
 
-        $db = JFactory::getDbo();
+        $db    = JFactory::getDbo();
         $query = $db->getQuery(true)
             ->update($db->quoteName('#__extensions'))
             ->set($db->quoteName('params') . ' = ' . $db->quote($params->toString()))
