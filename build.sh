@@ -10,6 +10,7 @@ rm -f "${ZIPFILE}"
 zip -r "${ZIPFILE}" \
     redeuform.xml \
     README.md \
+    LICENSE.txt \
     admin/ \
     site/ \
     language/ \
