@@ -325,23 +325,30 @@ function rfRenderField($field, $isJ4)
         });
     });
 
-    // Live colour preview — delegated so it works regardless of how Joomla's
-    // "color" field type renders internally (native <input type="color">,
-    // or a JS-enhanced picker in some Joomla versions).
+    // Live colour preview. Joomla's "color" field type renders via the
+    // minicolors jQuery plugin on some versions, which updates the input's
+    // value with jQuery's synthetic $(el).trigger('change') — that does NOT
+    // dispatch a real native DOM event, so plain addEventListener('change')
+    // never fires. Bind through jQuery (always present in Joomla admin) when
+    // available so we catch it; fall back to native events otherwise.
     var previewApp      = document.querySelector('.rf-admin-colour-preview #redeurform-app');
     var colourContainer = document.querySelector('.rf-admin-colour-fields');
 
-    function updatePreview(e) {
-        var wrapper = e.target.closest ? e.target.closest('[data-rf-var]') : null;
-        if (!wrapper || !e.target.value) return;
-        previewApp.style.setProperty(wrapper.getAttribute('data-rf-var'), e.target.value);
-    }
-
     if (previewApp && colourContainer) {
-        // capture: true so we catch the event even if a widget dispatches it
-        // without bubbling
-        colourContainer.addEventListener('input', updatePreview, true);
-        colourContainer.addEventListener('change', updatePreview, true);
+        function applyValue(target) {
+            var wrapper = target.closest ? target.closest('[data-rf-var]') : null;
+            if (!wrapper || !target.value) return;
+            previewApp.style.setProperty(wrapper.getAttribute('data-rf-var'), target.value);
+        }
+
+        if (window.jQuery) {
+            window.jQuery(colourContainer).on('input change', 'input, select', function () {
+                applyValue(this);
+            });
+        } else {
+            colourContainer.addEventListener('input', function (e) { applyValue(e.target); }, true);
+            colourContainer.addEventListener('change', function (e) { applyValue(e.target); }, true);
+        }
     }
 }());
 </script>
