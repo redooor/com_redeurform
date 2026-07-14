@@ -1,4 +1,11 @@
-<?php defined('_JEXEC') or die; ?>
+<?php
+/**
+ * @package     com_redeurform
+ * @copyright   Copyright (C) 2026 Redooor LLP. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+defined('_JEXEC') or die;
 
 <div id="redeurform-app">
   <div class="rf-container">
