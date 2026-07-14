@@ -27,6 +27,11 @@ abstract class RedeurformHelper
                 'index.php?option=com_redeurform&view=redeurform',
                 $vName === 'redeurform'
             );
+            JHtmlSidebar::addEntry(
+                JText::_('COM_REDEURFORM_HELP'),
+                'index.php?option=com_redeurform&view=help',
+                $vName === 'help'
+            );
         }
     }
 

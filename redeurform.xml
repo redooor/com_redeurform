@@ -65,6 +65,7 @@
         <submenu>
             <menu link="option=com_redeurform&amp;view=submissions">COM_REDEURFORM_SUBMISSIONS</menu>
             <menu link="option=com_redeurform&amp;view=redeurform">COM_REDEURFORM_SETTINGS</menu>
+            <menu link="option=com_redeurform&amp;view=help">COM_REDEURFORM_HELP</menu>
         </submenu>
     </administration>
 
