@@ -26,21 +26,37 @@ $tsiteKey        = trim($params->get('turnstile_site_key', ''));
 $tsecretKey      = trim($params->get('turnstile_secret_key', ''));
 $turnstileActive = !empty($tsiteKey) && !empty($tsecretKey);
 
+function rfPlaceholderTable()
+{
+    $placeholders = array(
+        '{name}'            => JText::_('COM_REDEURFORM_PLACEHOLDER_NAME_DESC'),
+        '{email}'           => JText::_('COM_REDEURFORM_PLACEHOLDER_EMAIL_DESC'),
+        '{phone}'           => JText::_('COM_REDEURFORM_PLACEHOLDER_PHONE_DESC'),
+        '{message}'         => JText::_('COM_REDEURFORM_PLACEHOLDER_MESSAGE_DESC'),
+        '{receiving_email}' => JText::_('COM_REDEURFORM_PLACEHOLDER_RECEIVING_EMAIL_DESC'),
+        '{sendfrom_email}'  => JText::_('COM_REDEURFORM_PLACEHOLDER_SENDFROM_EMAIL_DESC'),
+    );
+
+    echo '<div class="rf-admin-placeholder-table">';
+    echo '<p class="rf-admin-placeholder-title">' . JText::_('COM_REDEURFORM_EMAIL_TEMPLATE_PLACEHOLDERS_TITLE') . '</p>';
+    echo '<table class="table table-condensed">';
+    echo '<tbody>';
+    foreach ($placeholders as $token => $desc) {
+        echo '<tr><td><code>' . htmlspecialchars($token) . '</code></td><td>' . htmlspecialchars($desc) . '</td></tr>';
+    }
+    echo '</tbody>';
+    echo '</table>';
+    echo '</div>';
+}
+
 function rfRenderField($field, $isJ4)
 {
-    $extraHelp = ($field->fieldname === 'email_template')
-        ? JText::_('COM_REDEURFORM_EMAIL_TEMPLATE_HELP')
-        : null;
-
     if ($isJ4) {
         echo '<div class="mb-3">';
         echo '<label class="form-label">' . $field->label . '</label>';
         echo $field->input;
         if ($field->description) {
             echo '<div class="form-text">' . JText::_($field->description) . '</div>';
-        }
-        if ($extraHelp) {
-            echo '<div class="form-text">' . $extraHelp . '</div>';
         }
         echo '</div>';
     } else {
@@ -50,10 +66,11 @@ function rfRenderField($field, $isJ4)
         if ($field->description) {
             echo '<div class="controls"><span class="help-block">' . JText::_($field->description) . '</span></div>';
         }
-        if ($extraHelp) {
-            echo '<div class="controls"><span class="help-block">' . $extraHelp . '</span></div>';
-        }
         echo '</div>';
+    }
+
+    if ($field->fieldname === 'email_template') {
+        rfPlaceholderTable();
     }
 }
 ?>
@@ -62,13 +79,13 @@ function rfRenderField($field, $isJ4)
 <div id="j-sidebar-container" class="span2">
     <?php echo $this->sidebar; ?>
 </div>
-<div id="j-main-container" class="span10">
+<div id="j-main-container" class="span10 rf-admin-wrap">
 <?php else: ?>
-<div id="j-main-container">
+<div id="j-main-container" class="rf-admin-wrap">
 <?php endif; ?>
 
 <!-- Tab navigation -->
-<ul class="nav nav-tabs" id="rf-tab-nav" style="margin-bottom:0;">
+<ul class="nav nav-tabs rf-admin-tabs" id="rf-tab-nav">
     <li class="nav-item active">
         <a class="nav-link active" href="#" data-rf-tab="rf-pane-email">
             <?php echo JText::_('COM_REDEURFORM_SETTINGS_FIELDSET_EMAIL'); ?>
@@ -91,7 +108,7 @@ function rfRenderField($field, $isJ4)
     </li>
 </ul>
 
-<div style="border:1px solid #ddd; border-top:none; padding:20px;">
+<div class="rf-admin-card">
 
     <!-- Main settings form (wraps the first three tab panes) -->
     <form action="<?php echo JRoute::_('index.php?option=com_redeurform&view=redeurform'); ?>"
@@ -125,7 +142,7 @@ function rfRenderField($field, $isJ4)
     <!-- Tab: Mail Configuration Diagnostics (outside adminForm — has its own form for test email) -->
     <div id="rf-pane-diag" class="rf-pane" style="display:none;">
 
-        <table class="table table-striped table-condensed" style="max-width:640px;">
+        <table class="table table-striped table-condensed rf-admin-diag-table" style="max-width:640px;">
             <tbody>
                 <tr>
                     <th style="width:240px;"><?php echo JText::_('COM_REDEURFORM_MAIL_DIAG_JOOMLA_MAILER'); ?></th>

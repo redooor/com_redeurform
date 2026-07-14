@@ -1,0 +1,132 @@
+/**
+ * @package     com_redeurform
+ * @copyright   Copyright (C) 2026 Redooor LLP. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ *
+ * Admin dashboard styling — neutral/modern, scoped under .rf-admin-wrap so it
+ * never leaks into the rest of the Joomla admin UI. Deliberately avoids
+ * hardcoded background colours where possible so it doesn't fight dark-mode
+ * admin templates.
+ */
+
+.rf-admin-wrap {
+    --rf-admin-border: rgba(0, 0, 0, 0.12);
+    --rf-admin-muted: #6c757d;
+    --rf-admin-surface: rgba(0, 0, 0, 0.015);
+    --rf-admin-hover: rgba(0, 0, 0, 0.04);
+    --rf-admin-accent: #495057;
+}
+
+/* Tabs */
+.rf-admin-wrap .rf-admin-tabs {
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--rf-admin-border);
+}
+
+.rf-admin-wrap .rf-admin-tabs .nav-item,
+.rf-admin-wrap .rf-admin-tabs > li {
+    margin-bottom: -1px;
+}
+
+.rf-admin-wrap .rf-admin-tabs .nav-link,
+.rf-admin-wrap .rf-admin-tabs > li > a {
+    display: inline-block;
+    padding: 10px 16px;
+    color: var(--rf-admin-muted);
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.rf-admin-wrap .rf-admin-tabs .nav-link:hover,
+.rf-admin-wrap .rf-admin-tabs > li > a:hover {
+    color: var(--rf-admin-accent);
+    background-color: var(--rf-admin-hover);
+}
+
+.rf-admin-wrap .rf-admin-tabs .nav-link.active,
+.rf-admin-wrap .rf-admin-tabs > li.active > a {
+    color: var(--rf-admin-accent);
+    background-color: transparent;
+    border-color: var(--rf-admin-border) var(--rf-admin-border) transparent;
+    border-bottom: 2px solid var(--rf-admin-accent);
+}
+
+/* Card */
+.rf-admin-wrap .rf-admin-card {
+    border: 1px solid var(--rf-admin-border);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    padding: 24px;
+}
+
+/* Field spacing */
+.rf-admin-wrap .control-group,
+.rf-admin-wrap .mb-3 {
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--rf-admin-surface);
+}
+
+.rf-admin-wrap .control-group:last-child,
+.rf-admin-wrap .mb-3:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.rf-admin-wrap .control-label,
+.rf-admin-wrap .form-label {
+    font-weight: 600;
+    color: var(--rf-admin-accent);
+    margin-bottom: 4px;
+}
+
+.rf-admin-wrap .help-block,
+.rf-admin-wrap .form-text {
+    color: var(--rf-admin-muted);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Placeholder reference table */
+.rf-admin-wrap .rf-admin-placeholder-table {
+    margin-top: 10px;
+    padding: 14px 16px;
+    background-color: var(--rf-admin-surface);
+    border: 1px solid var(--rf-admin-border);
+    border-radius: 4px;
+}
+
+.rf-admin-wrap .rf-admin-placeholder-title {
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--rf-admin-muted);
+    margin: 0 0 8px;
+}
+
+.rf-admin-wrap .rf-admin-placeholder-table table {
+    margin-bottom: 0;
+}
+
+.rf-admin-wrap .rf-admin-placeholder-table code {
+    color: var(--rf-admin-accent);
+    background: transparent;
+    padding: 0;
+}
+
+/* Diagnostics table */
+.rf-admin-wrap .rf-admin-diag-table {
+    border: 1px solid var(--rf-admin-border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.rf-admin-wrap .rf-admin-diag-table th {
+    font-weight: 600;
+    color: var(--rf-admin-accent);
+}
