@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updates>
+    <update>
+        <name>Redeur Contact Form</name>
+        <description>A professional contact form component with Cloudflare Turnstile, email notifications, customisable colours and submission management.</description>
+        <element>com_redeurform</element>
+        <type>component</type>
+        <version>1.0.9</version>
+        <downloads>
+            <downloadurl type="full" format="zip">https://github.com/redooor/com_redeurform/releases/download/v1.0.9/com_redeurform-v1.0.9.zip</downloadurl>
+        </downloads>
+        <tags>
+            <tag>stable</tag>
+        </tags>
+        <maintainer>Redooor LLP</maintainer>
+        <maintainerurl>https://redooor.com</maintainerurl>
+        <targetplatform name="joomla" version="3\.[0-9]+" />
+        <targetplatform name="joomla" version="4\.[0-9]+" />
+        <php_minimum>7.4</php_minimum>
+    </update>
+</updates>

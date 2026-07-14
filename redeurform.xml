@@ -66,4 +66,8 @@
             <menu link="option=com_redeurform&amp;view=redeurform">COM_REDEURFORM_SETTINGS</menu>
         </submenu>
     </administration>
+
+    <updateservers>
+        <server type="collection" priority="1" name="Redeur Contact Form Updates">https://raw.githubusercontent.com/redooor/com_redeurform/main/update.xml</server>
+    </updateservers>
 </extension>
