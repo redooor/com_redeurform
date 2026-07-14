@@ -13,7 +13,17 @@ class RedeurformControllerForm extends JControllerLegacy
     {
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-        $app   = JFactory::getApplication();
+        $app     = JFactory::getApplication();
+        $session = JFactory::getSession();
+
+        // ── Rate limiting ─────────────────────────────────────────────────────
+        $lastSubmit = (int) $session->get('redeurform.last_submit', 0);
+        if ((time() - $lastSubmit) < 60) {
+            $app->enqueueMessage(JText::_('COM_REDEURFORM_ERROR_TOO_FAST'), 'warning');
+            $app->redirect(JRoute::_('index.php?option=com_redeurform&view=redeurform', false));
+            return;
+        }
+
         $input = $app->input;
         $model = $this->getModel('Form', 'RedeurformModel');
 
@@ -29,9 +39,14 @@ class RedeurformControllerForm extends JControllerLegacy
 
         if (empty(trim($data['name']))) {
             $errors[] = JText::_('COM_REDEURFORM_ERROR_NAME_REQUIRED');
+        } elseif (mb_strlen($data['name']) > 100) {
+            $errors[] = JText::_('COM_REDEURFORM_ERROR_NAME_TOO_LONG');
         }
         if (empty(trim($data['email'])) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $errors[] = JText::_('COM_REDEURFORM_ERROR_EMAIL_INVALID');
+        }
+        if (!empty($data['phone']) && mb_strlen($data['phone']) > 30) {
+            $errors[] = JText::_('COM_REDEURFORM_ERROR_PHONE_TOO_LONG');
         }
         if (empty(trim($data['message']))) {
             $errors[] = JText::_('COM_REDEURFORM_ERROR_MESSAGE_REQUIRED');
@@ -63,6 +78,8 @@ class RedeurformControllerForm extends JControllerLegacy
             $app->redirect(JRoute::_('index.php?option=com_redeurform&view=redeurform', false));
             return;
         }
+
+        $session->set('redeurform.last_submit', time());
 
         $data['ip_address'] = $app->input->server->getString('REMOTE_ADDR', '');
         if ($model->saveSubmission($data)) {

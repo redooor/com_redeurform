@@ -99,8 +99,8 @@ $isJ4 = RedeurformHelper::isJoomla4();
 
         <input type="hidden" name="task"         value="" />
         <input type="hidden" name="boxchecked"   value="0" />
-        <input type="hidden" name="filter_order"     value="<?php echo $this->listOrder; ?>" />
-        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->listDirn; ?>" />
+        <input type="hidden" name="filter_order"     value="<?php echo $this->escape($this->listOrder); ?>" />
+        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->listDirn); ?>" />
         <?php echo JHtml::_('form.token'); ?>
 
     </form>

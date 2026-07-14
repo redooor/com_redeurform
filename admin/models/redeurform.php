@@ -31,8 +31,15 @@ class RedeurformModelRedeurform extends JModelAdmin
 
     public function save($data)
     {
+        $allowed = array(
+            'receiving_email', 'sendfrom_email', 'email_template',
+            'turnstile_site_key', 'turnstile_secret_key',
+            'color_primary', 'color_secondary', 'color_background',
+            'color_text', 'color_label', 'color_button',
+            'color_button_text', 'color_accent1', 'color_accent2', 'color_accent3',
+        );
         $params = JComponentHelper::getParams('com_redeurform');
-        foreach ($data as $key => $value) {
+        foreach (array_intersect_key($data, array_flip($allowed)) as $key => $value) {
             $params->set($key, $value);
         }
 

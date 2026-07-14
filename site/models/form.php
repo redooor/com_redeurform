@@ -66,7 +66,8 @@ class RedeurformModelForm extends JModelLegacy
         $mailer = JFactory::getMailer();
         $mailer->setSender(array($fromEmail, $fromName));
         $mailer->addRecipient($toEmail, $toName);
-        $mailer->addReplyTo($data['email'], $data['name']);
+        $safeName = str_replace(array("\r", "\n", "\t"), ' ', $data['name']);
+        $mailer->addReplyTo($data['email'], $safeName);
         $mailer->setSubject(JText::_('COM_REDEURFORM_EMAIL_SUBJECT'));
         $mailer->setBody($body);
         $mailer->isHTML(false);

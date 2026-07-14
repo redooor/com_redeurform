@@ -19,6 +19,7 @@ class RedeurformControllerRedeurform extends JControllerForm
     public function save($key = null, $urlVar = null)
     {
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+        JFactory::getUser()->authorise('core.admin', 'com_redeurform') or jexit(JText::_('JERROR_ALERTNOAUTHOR'));
 
         $app   = JFactory::getApplication();
         $model = $this->getModel('Redeurform', 'RedeurformModel');
@@ -40,6 +41,7 @@ class RedeurformControllerRedeurform extends JControllerForm
     public function testEmail()
     {
         JSession::checkToken('get') or JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+        JFactory::getUser()->authorise('core.admin', 'com_redeurform') or jexit(JText::_('JERROR_ALERTNOAUTHOR'));
 
         $app     = JFactory::getApplication();
         $params  = JComponentHelper::getParams('com_redeurform');

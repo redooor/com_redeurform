@@ -31,9 +31,13 @@ class RedeurformModelSubmissions extends JModelList
                           ' OR ' . $db->quoteName('email') . ' LIKE ' . $search . ')');
         }
 
+        $allowedCols = array('id', 'name', 'email', 'created_at');
+        $allowedDirs = array('ASC', 'DESC');
         $orderCol = $this->state->get('list.ordering', 'created_at');
-        $orderDir = $this->state->get('list.direction', 'desc');
-        $query->order($db->escape($orderCol) . ' ' . $db->escape($orderDir));
+        $orderDir = $this->state->get('list.direction', 'DESC');
+        $orderCol = in_array($orderCol, $allowedCols, true) ? $orderCol : 'created_at';
+        $orderDir = in_array(strtoupper($orderDir), $allowedDirs, true) ? strtoupper($orderDir) : 'DESC';
+        $query->order($db->quoteName($orderCol) . ' ' . $orderDir);
 
         return $query;
     }
