@@ -174,6 +174,18 @@ When Joomla's `JDEBUG` constant is `true`, the full Turnstile `siteverify` respo
 
 Install the new ZIP over the existing installation — the manifest uses `method="upgrade"` so Joomla will update files without dropping the database table or existing submissions.
 
+### Migrating from com_redeuform (v1.0.9 and earlier)
+
+Version 1.1.0 renamed the component from `com_redeuform` to `com_redeurform`. Because Joomla identifies components by their element name, the new package is treated as a separate component and **cannot be installed as an in-place upgrade**. Follow these steps to migrate:
+
+1. **Export your submissions** — in phpMyAdmin, export the `#__redeuform_submissions` table as SQL before doing anything else.
+2. **Record your settings** — note down your Receiving Email, Send-as Email, Turnstile keys, and any colour values from **Components → Redeu Contact Form → Settings**.
+3. **Uninstall the old component** — go to **Extensions → Manage**, find *Redeu Contact Form* (`com_redeuform`) and uninstall it. This drops the old submissions table.
+4. **Install the new component** — upload the `com_redeurform-v1.1.0.zip` package. Joomla creates the new `#__redeurform_submissions` table automatically.
+5. **Restore your settings** — re-enter the values you noted in step 2 under **Components → Redeur Contact Form → Settings**.
+6. **Restore submission data** *(optional)* — open your exported SQL file, replace every occurrence of `_redeuform_submissions` with `_redeurform_submissions`, then import it via phpMyAdmin.
+7. **Rebuild menu items** — any menu items pointing to the old component will be broken. Delete them and recreate them via **Menus → [your menu] → Add New Menu Item → Redeur Contact Form**.
+
 ### Creating a Menu Item
 
 1. Go to **Menus → [your menu] → Add New Menu Item**.
