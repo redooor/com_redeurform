@@ -25,6 +25,37 @@ if (empty($sendFrom)) {
 $tsiteKey        = trim($params->get('turnstile_site_key', ''));
 $tsecretKey      = trim($params->get('turnstile_secret_key', ''));
 $turnstileActive = !empty($tsiteKey) && !empty($tsecretKey);
+
+function rfRenderField($field, $isJ4)
+{
+    $extraHelp = ($field->fieldname === 'email_template')
+        ? JText::_('COM_REDEURFORM_EMAIL_TEMPLATE_HELP')
+        : null;
+
+    if ($isJ4) {
+        echo '<div class="mb-3">';
+        echo '<label class="form-label">' . $field->label . '</label>';
+        echo $field->input;
+        if ($field->description) {
+            echo '<div class="form-text">' . JText::_($field->description) . '</div>';
+        }
+        if ($extraHelp) {
+            echo '<div class="form-text">' . $extraHelp . '</div>';
+        }
+        echo '</div>';
+    } else {
+        echo '<div class="control-group">';
+        echo '<div class="control-label">' . $field->label . '</div>';
+        echo '<div class="controls">' . $field->input . '</div>';
+        if ($field->description) {
+            echo '<div class="controls"><span class="help-block">' . JText::_($field->description) . '</span></div>';
+        }
+        if ($extraHelp) {
+            echo '<div class="controls"><span class="help-block">' . $extraHelp . '</span></div>';
+        }
+        echo '</div>';
+    }
+}
 ?>
 
 <?php if (!$isJ4 && !empty($this->sidebar)): ?>
@@ -38,23 +69,23 @@ $turnstileActive = !empty($tsiteKey) && !empty($tsecretKey);
 
 <!-- Tab navigation -->
 <ul class="nav nav-tabs" id="rf-tab-nav" style="margin-bottom:0;">
-    <li class="active">
-        <a href="#" data-rf-tab="rf-pane-email">
+    <li class="nav-item active">
+        <a class="nav-link active" href="#" data-rf-tab="rf-pane-email">
             <?php echo JText::_('COM_REDEURFORM_SETTINGS_FIELDSET_EMAIL'); ?>
         </a>
     </li>
-    <li>
-        <a href="#" data-rf-tab="rf-pane-turnstile">
+    <li class="nav-item">
+        <a class="nav-link" href="#" data-rf-tab="rf-pane-turnstile">
             <?php echo JText::_('COM_REDEURFORM_SETTINGS_FIELDSET_TURNSTILE'); ?>
         </a>
     </li>
-    <li>
-        <a href="#" data-rf-tab="rf-pane-colours">
+    <li class="nav-item">
+        <a class="nav-link" href="#" data-rf-tab="rf-pane-colours">
             <?php echo JText::_('COM_REDEURFORM_SETTINGS_FIELDSET_COLOURS'); ?>
         </a>
     </li>
-    <li>
-        <a href="#" data-rf-tab="rf-pane-diag">
+    <li class="nav-item">
+        <a class="nav-link" href="#" data-rf-tab="rf-pane-diag">
             <?php echo JText::_('COM_REDEURFORM_MAIL_DIAG_TITLE'); ?>
         </a>
     </li>
@@ -69,50 +100,21 @@ $turnstileActive = !empty($tsiteKey) && !empty($tsecretKey);
         <!-- Tab: Email Configuration -->
         <div id="rf-pane-email" class="rf-pane">
             <?php foreach ($this->form->getFieldset('basic') as $field): ?>
-            <div class="control-group">
-                <div class="control-label"><?php echo $field->label; ?></div>
-                <div class="controls"><?php echo $field->input; ?></div>
-                <?php if ($field->description): ?>
-                <div class="controls">
-                    <span class="help-block"><?php echo JText::_($field->description); ?></span>
-                </div>
-                <?php endif; ?>
-                <?php if ($field->fieldname === 'email_template'): ?>
-                <div class="controls">
-                    <span class="help-block"><?php echo JText::_('COM_REDEURFORM_EMAIL_TEMPLATE_HELP'); ?></span>
-                </div>
-                <?php endif; ?>
-            </div>
+                <?php rfRenderField($field, $isJ4); ?>
             <?php endforeach; ?>
         </div>
 
         <!-- Tab: Cloudflare Turnstile -->
         <div id="rf-pane-turnstile" class="rf-pane" style="display:none;">
             <?php foreach ($this->form->getFieldset('turnstile') as $field): ?>
-            <div class="control-group">
-                <div class="control-label"><?php echo $field->label; ?></div>
-                <div class="controls"><?php echo $field->input; ?></div>
-                <?php if ($field->description): ?>
-                <div class="controls">
-                    <span class="help-block"><?php echo JText::_($field->description); ?></span>
-                </div>
-                <?php endif; ?>
-            </div>
+                <?php rfRenderField($field, $isJ4); ?>
             <?php endforeach; ?>
         </div>
 
         <!-- Tab: Colour Scheme -->
         <div id="rf-pane-colours" class="rf-pane" style="display:none;">
             <?php foreach ($this->form->getFieldset('colours') as $field): ?>
-            <div class="control-group">
-                <div class="control-label"><?php echo $field->label; ?></div>
-                <div class="controls"><?php echo $field->input; ?></div>
-                <?php if ($field->description): ?>
-                <div class="controls">
-                    <span class="help-block"><?php echo JText::_($field->description); ?></span>
-                </div>
-                <?php endif; ?>
-            </div>
+                <?php rfRenderField($field, $isJ4); ?>
             <?php endforeach; ?>
         </div>
 
@@ -175,7 +177,7 @@ $turnstileActive = !empty($tsiteKey) && !empty($tsecretKey);
         <form action="<?php echo JRoute::_('index.php?option=com_redeurform&task=redeurform.testEmail'); ?>"
               method="post" style="margin-top:12px;">
             <?php echo JHtml::_('form.token'); ?>
-            <button type="submit" class="btn btn-default"
+            <button type="submit" class="btn <?php echo $isJ4 ? 'btn-secondary' : 'btn-default'; ?>"
                 <?php if (empty($toEmail)): ?>disabled="disabled"<?php endif; ?>>
                 <span class="icon-mail"></span>
                 <?php echo JText::_('COM_REDEURFORM_TEST_EMAIL_BUTTON'); ?>
@@ -197,8 +199,12 @@ $turnstileActive = !empty($tsiteKey) && !empty($tsecretKey);
     var panes = document.querySelectorAll('.rf-pane');
 
     function activate(tabEl) {
-        // Update nav active state
-        tabs.forEach(function (t) { t.parentElement.classList.remove('active'); });
+        // Update nav active state (both <li> for Bootstrap 2 and <a> for Bootstrap 5)
+        tabs.forEach(function (t) {
+            t.classList.remove('active');
+            t.parentElement.classList.remove('active');
+        });
+        tabEl.classList.add('active');
         tabEl.parentElement.classList.add('active');
 
         // Show the matching pane, hide the rest

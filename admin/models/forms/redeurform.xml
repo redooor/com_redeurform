@@ -10,6 +10,7 @@
             description="COM_REDEURFORM_PARAM_RECEIVING_EMAIL_DESC"
             size="50"
             required="true"
+            class="form-control"
         />
         <field
             name="sendfrom_email"
@@ -17,6 +18,7 @@
             label="COM_REDEURFORM_PARAM_SENDFROM_EMAIL_LABEL"
             description="COM_REDEURFORM_PARAM_SENDFROM_EMAIL_DESC"
             size="50"
+            class="form-control"
         />
         <field
             name="email_template"
@@ -26,6 +28,7 @@
             rows="12"
             cols="60"
             default="From:    {name}&#10;Email:   {email}&#10;Phone:   {phone}&#10;&#10;Message:&#10;{message}&#10;&#10;---&#10;Sent to:   {receiving_email}&#10;Send-as:   {sendfrom_email}"
+            class="form-control"
         />
     </fieldset>
 
@@ -37,6 +40,7 @@
             label="COM_REDEURFORM_PARAM_TURNSTILE_SITE_KEY_LABEL"
             description="COM_REDEURFORM_PARAM_TURNSTILE_SITE_KEY_DESC"
             size="60"
+            class="form-control"
         />
         <field
             name="turnstile_secret_key"
@@ -44,6 +48,7 @@
             label="COM_REDEURFORM_PARAM_TURNSTILE_SECRET_KEY_LABEL"
             description="COM_REDEURFORM_PARAM_TURNSTILE_SECRET_KEY_DESC"
             size="60"
+            class="form-control"
         />
     </fieldset>
 
@@ -55,6 +60,7 @@
             label="COM_REDEURFORM_PARAM_COLOR_PRIMARY_LABEL"
             description="COM_REDEURFORM_PARAM_COLOR_PRIMARY_DESC"
             default="#4e9d6d"
+            class="form-control form-control-color"
         />
         <field
             name="color_secondary"
@@ -62,6 +68,7 @@
             label="COM_REDEURFORM_PARAM_COLOR_SECONDARY_LABEL"
             description="COM_REDEURFORM_PARAM_COLOR_SECONDARY_DESC"
             default="#f6eb14"
+            class="form-control form-control-color"
         />
         <field
             name="color_background"
@@ -69,6 +76,7 @@
             label="COM_REDEURFORM_PARAM_COLOR_BACKGROUND_LABEL"
             description="COM_REDEURFORM_PARAM_COLOR_BACKGROUND_DESC"
             default="#ffffff"
+            class="form-control form-control-color"
         />
         <field
             name="color_text"
@@ -76,6 +84,7 @@
             label="COM_REDEURFORM_PARAM_COLOR_TEXT_LABEL"
             description="COM_REDEURFORM_PARAM_COLOR_TEXT_DESC"
             default="#1a1a1a"
+            class="form-control form-control-color"
         />
         <field
             name="color_label"
@@ -83,6 +92,7 @@
             label="COM_REDEURFORM_PARAM_COLOR_LABEL_LABEL"
             description="COM_REDEURFORM_PARAM_COLOR_LABEL_DESC"
             default="#4e9d6d"
+            class="form-control form-control-color"
         />
         <field
             name="color_button"
@@ -90,6 +100,7 @@
             label="COM_REDEURFORM_PARAM_COLOR_BUTTON_LABEL"
             description="COM_REDEURFORM_PARAM_COLOR_BUTTON_DESC"
             default="#4e9d6d"
+            class="form-control form-control-color"
         />
         <field
             name="color_button_text"
@@ -97,6 +108,7 @@
             label="COM_REDEURFORM_PARAM_COLOR_BUTTON_TEXT_LABEL"
             description="COM_REDEURFORM_PARAM_COLOR_BUTTON_TEXT_DESC"
             default="#ffffff"
+            class="form-control form-control-color"
         />
         <field
             name="color_accent1"
@@ -104,6 +116,7 @@
             label="COM_REDEURFORM_PARAM_COLOR_ACCENT1_LABEL"
             description="COM_REDEURFORM_PARAM_COLOR_ACCENT1_DESC"
             default="#4e9d6d"
+            class="form-control form-control-color"
         />
         <field
             name="color_accent2"
@@ -111,6 +124,7 @@
             label="COM_REDEURFORM_PARAM_COLOR_ACCENT2_LABEL"
             description="COM_REDEURFORM_PARAM_COLOR_ACCENT2_DESC"
             default="#6db88a"
+            class="form-control form-control-color"
         />
         <field
             name="color_accent3"
@@ -118,6 +132,7 @@
             label="COM_REDEURFORM_PARAM_COLOR_ACCENT3_LABEL"
             description="COM_REDEURFORM_PARAM_COLOR_ACCENT3_DESC"
             default="#f6eb14"
+            class="form-control form-control-color"
         />
     </fieldset>
 
