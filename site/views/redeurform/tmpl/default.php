@@ -6,7 +6,7 @@
  */
 
 defined('_JEXEC') or die;
-
+?>
 <div id="redeurform-app">
   <div class="rf-container">
 
