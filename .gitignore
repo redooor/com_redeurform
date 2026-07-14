@@ -1,5 +1,5 @@
 /vendor/
 /composer.lock
-/com_redeuform-v*.zip
+/com_redeurform-v*.zip
 .DS_Store
 .phpunit.result.cache
