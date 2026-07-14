@@ -94,7 +94,7 @@ class RedeurformControllerForm extends JControllerLegacy
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
-            CURLOPT_USERAGENT      => 'com_redeurform/1.0.9',
+            CURLOPT_USERAGENT      => 'com_redeurform/1.1.0',
         ));
 
         $response  = curl_exec($ch);

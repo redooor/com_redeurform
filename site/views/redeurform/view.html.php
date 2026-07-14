@@ -23,7 +23,7 @@ class RedeurformViewRedeurform extends JViewLegacy
         // ── Component stylesheet ───────────────────────────────────────────────
         $doc->addStyleSheet(
             JUri::root(true) . '/media/com_redeurform/css/redeurform.css',
-            array('version' => '1.0.9')
+            array('version' => '1.1.0')
         );
 
         // ── Colour overrides via CSS custom properties ─────────────────────────

@@ -1,6 +1,6 @@
 # com_redeurform — Redeur Contact Form
 
-**Version:** 1.0.9  
+**Version:** 1.1.0  
 **Author:** Redooor LLP  
 **License:** GNU General Public License v2 or later  
 **Compatibility:** Joomla 3.x · Joomla 4.x  
@@ -68,7 +68,7 @@ redeurform/
 │       ├── install.mysql.utf8.sql      Creates #__redeurform_submissions table
 │       ├── uninstall.mysql.utf8.sql    Drops table on uninstall
 │       └── updates/mysql/              One file per version for schema versioning
-│           ├── 1.0.0.sql … 1.0.9.sql
+│           ├── 1.0.0.sql … 1.1.0.sql
 │
 ├── media/
 │   └── css/
@@ -165,7 +165,7 @@ When Joomla's `JDEBUG` constant is `true`, the full Turnstile `siteverify` respo
 
 ### Installation
 
-1. Download `com_redeurform_v1.0.9.zip`.
+1. Download `com_redeurform_v1.1.0.zip`.
 2. In the Joomla Administrator, go to **Extensions → Manage → Install**.
 3. Upload the ZIP file and click **Upload & Install**.
 4. The component creates the `#__redeurform_submissions` table automatically.
@@ -258,6 +258,7 @@ Go to **Extensions → Manage → Manage**, find **Redeur Contact Form**, tick i
 
 | Version | Summary |
 |---|---|
+| 1.1.0 | Renamed to com_redeurform; GPL headers; update server; admin dashboard tidy-up |
 | 1.0.9 | Added admin colour pickers; Joomla 4 compatibility; CSS custom properties; developer README |
 | 1.0.8 | Removed SVG icon and system messages from site template (delegated to Joomla theme) |
 | 1.0.7 | Replaced reCAPTCHA v3 with Cloudflare Turnstile; updated all language strings |
