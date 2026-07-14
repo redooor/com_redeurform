@@ -170,7 +170,9 @@ function rfRenderField($field, $isJ4)
 
                 <div class="rf-admin-colour-fields">
                     <?php foreach ($this->form->getFieldset('colours') as $field): ?>
-                        <?php rfRenderField($field, $isJ4); ?>
+                        <div data-rf-var="<?php echo htmlspecialchars($previewVarMap[$field->fieldname]); ?>">
+                            <?php rfRenderField($field, $isJ4); ?>
+                        </div>
                     <?php endforeach; ?>
                 </div>
 
@@ -323,18 +325,23 @@ function rfRenderField($field, $isJ4)
         });
     });
 
-    // Live colour preview
-    var previewApp = document.querySelector('.rf-admin-colour-preview #redeurform-app');
-    var varMap = <?php echo json_encode($previewVarMap); ?>;
+    // Live colour preview — delegated so it works regardless of how Joomla's
+    // "color" field type renders internally (native <input type="color">,
+    // or a JS-enhanced picker in some Joomla versions).
+    var previewApp      = document.querySelector('.rf-admin-colour-preview #redeurform-app');
+    var colourContainer = document.querySelector('.rf-admin-colour-fields');
 
-    if (previewApp) {
-        Object.keys(varMap).forEach(function (fieldName) {
-            var input = document.querySelector('[name="jform[' + fieldName + ']"]');
-            if (!input) return;
-            input.addEventListener('input', function () {
-                previewApp.style.setProperty(varMap[fieldName], input.value);
-            });
-        });
+    function updatePreview(e) {
+        var wrapper = e.target.closest ? e.target.closest('[data-rf-var]') : null;
+        if (!wrapper || !e.target.value) return;
+        previewApp.style.setProperty(wrapper.getAttribute('data-rf-var'), e.target.value);
+    }
+
+    if (previewApp && colourContainer) {
+        // capture: true so we catch the event even if a widget dispatches it
+        // without bubbling
+        colourContainer.addEventListener('input', updatePreview, true);
+        colourContainer.addEventListener('change', updatePreview, true);
     }
 }());
 </script>
