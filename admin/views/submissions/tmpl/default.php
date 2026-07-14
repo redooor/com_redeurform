@@ -15,6 +15,24 @@ $isJ4 = RedeuformHelper::isJoomla4();
     <form action="<?php echo JRoute::_('index.php?option=com_redeuform&view=submissions'); ?>" method="post" name="adminForm" id="adminForm">
 
         <!-- Search bar -->
+        <?php if ($isJ4): ?>
+        <div class="js-stools-container-bar mb-3">
+            <div class="input-group">
+                <input type="text" name="filter_search" id="filter_search"
+                    placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>"
+                    value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+                    class="form-control"
+                    aria-label="<?php echo JText::_('JSEARCH_FILTER_LABEL'); ?>" />
+                <button type="submit" class="btn btn-primary" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>">
+                    <span class="icon-search" aria-hidden="true"></span>
+                </button>
+                <a href="<?php echo JRoute::_('index.php?option=com_redeuform&view=submissions'); ?>"
+                   class="btn btn-secondary" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>">
+                    <span class="icon-times" aria-hidden="true"></span>
+                </a>
+            </div>
+        </div>
+        <?php else: ?>
         <div id="filter-bar" class="btn-toolbar">
             <div class="filter-search btn-group pull-left">
                 <label for="filter_search" class="element-invisible"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
@@ -34,6 +52,7 @@ $isJ4 = RedeuformHelper::isJoomla4();
             </div>
         </div>
         <div class="clearfix"></div>
+        <?php endif; ?>
 
         <table class="table table-striped" id="submissionList">
             <thead>
