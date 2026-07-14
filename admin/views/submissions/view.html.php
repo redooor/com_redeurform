@@ -1,9 +1,9 @@
 <?php
 defined('_JEXEC') or die;
 
-require_once JPATH_ADMINISTRATOR . '/components/com_redeuform/helpers/redeuform.php';
+require_once JPATH_ADMINISTRATOR . '/components/com_redeurform/helpers/redeurform.php';
 
-class RedeuformViewSubmissions extends JViewLegacy
+class RedeurformViewSubmissions extends JViewLegacy
 {
     protected $items;
     protected $pagination;
@@ -19,12 +19,12 @@ class RedeuformViewSubmissions extends JViewLegacy
         $this->listOrder  = $this->state->get('list.ordering', 'created_at');
         $this->listDirn   = $this->state->get('list.direction', 'desc');
 
-        RedeuformHelper::addSubmenu('submissions');
+        RedeurformHelper::addSubmenu('submissions');
 
         $this->addToolbar();
 
         // Joomla 3 sidebar
-        if (!RedeuformHelper::isJoomla4() && class_exists('JHtmlSidebar')) {
+        if (!RedeurformHelper::isJoomla4() && class_exists('JHtmlSidebar')) {
             $this->sidebar = JHtmlSidebar::render();
         }
 
@@ -33,8 +33,8 @@ class RedeuformViewSubmissions extends JViewLegacy
 
     protected function addToolbar()
     {
-        JToolbarHelper::title(JText::_('COM_REDEUFORM_SUBMISSIONS'), 'envelope');
+        JToolbarHelper::title(JText::_('COM_REDEURFORM_SUBMISSIONS'), 'envelope');
         JToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'submissions.delete');
-        JToolbarHelper::preferences('com_redeuform');
+        JToolbarHelper::preferences('com_redeurform');
     }
 }

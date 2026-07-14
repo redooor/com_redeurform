@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 
-class RedeuformController extends JControllerLegacy
+class RedeurformController extends JControllerLegacy
 {
     public function display($cachable = false, $urlparams = array())
     {

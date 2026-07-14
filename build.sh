@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION=$(grep -m1 '<version>' redeuform.xml | sed 's|.*<version>\(.*\)</version>.*|\1|' | tr -d ' \t\r\n')
-ZIPFILE="com_redeuform-v${VERSION}.zip"
+VERSION=$(grep -m1 '<version>' redeurform.xml | sed 's|.*<version>\(.*\)</version>.*|\1|' | tr -d ' \t\r\n')
+ZIPFILE="com_redeurform-v${VERSION}.zip"
 
 echo "Building ${ZIPFILE}..."
 rm -f "${ZIPFILE}"
 
 zip -r "${ZIPFILE}" \
-    redeuform.xml \
+    redeurform.xml \
     README.md \
     LICENSE.txt \
     admin/ \

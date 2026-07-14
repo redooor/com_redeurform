@@ -1,8 +1,6 @@
 <?php
 defined('_JEXEC') or die;
 
-require_once __DIR__ . '/helpers/redeuform.php';
-
-$controller = JControllerLegacy::getInstance('Redeuform');
+$controller = JControllerLegacy::getInstance('Redeurform');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();

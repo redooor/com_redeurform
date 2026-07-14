@@ -5,7 +5,7 @@ class SanitizeColorTest extends TestCase
 {
     private function sanitize(string $value, string $default = '#000000'): string
     {
-        $view = new RedeuformViewRedeuform();
+        $view = new RedeurformViewRedeurform();
         $ref  = new ReflectionMethod($view, 'sanitizeColor');
         $ref->setAccessible(true);
         return $ref->invoke($view, $value, $default);

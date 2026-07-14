@@ -1,9 +1,9 @@
 <?php
 defined('_JEXEC') or die;
 
-class RedeuformModelSubmission extends JModelAdmin
+class RedeurformModelSubmission extends JModelAdmin
 {
-    public function getTable($type = 'Submission', $prefix = 'RedeuformTable', $config = array())
+    public function getTable($type = 'Submission', $prefix = 'RedeurformTable', $config = array())
     {
         return JTable::getInstance($type, $prefix, $config);
     }
@@ -15,6 +15,6 @@ class RedeuformModelSubmission extends JModelAdmin
 
     protected function canDelete($record)
     {
-        return JFactory::getUser()->authorise('core.delete', 'com_redeuform');
+        return JFactory::getUser()->authorise('core.delete', 'com_redeurform');
     }
 }

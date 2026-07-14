@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS `#__redeuform_submissions`;
+DROP TABLE IF EXISTS `#__redeurform_submissions`;

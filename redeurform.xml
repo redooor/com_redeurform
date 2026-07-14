@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.0" method="upgrade">
-    <name>COM_REDEUFORM</name>
+    <name>COM_REDEURFORM</name>
     <author>Redooor LLP</author>
     <creationDate>2026-03-24</creationDate>
     <copyright>Copyright (C) 2026 Redooor LLP. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later</license>
     <version>1.0.9</version>
-    <description>COM_REDEUFORM_DESCRIPTION</description>
+    <description>COM_REDEURFORM_DESCRIPTION</description>
 
     <install>
         <sql>
@@ -25,27 +25,27 @@
     </update>
 
     <files folder="site">
-        <filename>redeuform.php</filename>
+        <filename>redeurform.php</filename>
         <filename>controller.php</filename>
         <folder>controllers</folder>
         <folder>models</folder>
         <folder>views</folder>
     </files>
 
-    <media destination="com_redeuform" folder="media">
+    <media destination="com_redeurform" folder="media">
         <folder>css</folder>
     </media>
 
     <languages folder="language">
-        <language tag="en-GB">en-GB/en-GB.com_redeuform.ini</language>
-        <language tag="en-GB">en-GB/en-GB.com_redeuform.sys.ini</language>
-        <language tag="zh-CN">zh-CN/zh-CN.com_redeuform.ini</language>
-        <language tag="zh-CN">zh-CN/zh-CN.com_redeuform.sys.ini</language>
+        <language tag="en-GB">en-GB/en-GB.com_redeurform.ini</language>
+        <language tag="en-GB">en-GB/en-GB.com_redeurform.sys.ini</language>
+        <language tag="zh-CN">zh-CN/zh-CN.com_redeurform.ini</language>
+        <language tag="zh-CN">zh-CN/zh-CN.com_redeurform.sys.ini</language>
     </languages>
 
     <administration>
         <files folder="admin">
-            <filename>redeuform.php</filename>
+            <filename>redeurform.php</filename>
             <filename>controller.php</filename>
             <folder>controllers</folder>
             <folder>helpers</folder>
@@ -55,15 +55,15 @@
             <folder>views</folder>
         </files>
         <languages folder="language">
-            <language tag="en-GB">en-GB/en-GB.com_redeuform.ini</language>
-            <language tag="en-GB">en-GB/en-GB.com_redeuform.sys.ini</language>
-            <language tag="zh-CN">zh-CN/zh-CN.com_redeuform.ini</language>
-            <language tag="zh-CN">zh-CN/zh-CN.com_redeuform.sys.ini</language>
+            <language tag="en-GB">en-GB/en-GB.com_redeurform.ini</language>
+            <language tag="en-GB">en-GB/en-GB.com_redeurform.sys.ini</language>
+            <language tag="zh-CN">zh-CN/zh-CN.com_redeurform.ini</language>
+            <language tag="zh-CN">zh-CN/zh-CN.com_redeurform.sys.ini</language>
         </languages>
-        <menu>COM_REDEUFORM</menu>
+        <menu>COM_REDEURFORM</menu>
         <submenu>
-            <menu link="option=com_redeuform&amp;view=submissions">COM_REDEUFORM_SUBMISSIONS</menu>
-            <menu link="option=com_redeuform&amp;view=redeuform">COM_REDEUFORM_SETTINGS</menu>
+            <menu link="option=com_redeurform&amp;view=submissions">COM_REDEURFORM_SUBMISSIONS</menu>
+            <menu link="option=com_redeurform&amp;view=redeurform">COM_REDEURFORM_SETTINGS</menu>
         </submenu>
     </administration>
 </extension>

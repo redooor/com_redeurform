@@ -1,6 +1,6 @@
 <?php defined('_JEXEC') or die;
 
-$isJ4 = RedeuformHelper::isJoomla4();
+$isJ4 = RedeurformHelper::isJoomla4();
 ?>
 
 <?php if (!$isJ4 && !empty($this->sidebar)): ?>
@@ -12,7 +12,7 @@ $isJ4 = RedeuformHelper::isJoomla4();
 <div id="j-main-container">
 <?php endif; ?>
 
-    <form action="<?php echo JRoute::_('index.php?option=com_redeuform&view=submissions'); ?>" method="post" name="adminForm" id="adminForm">
+    <form action="<?php echo JRoute::_('index.php?option=com_redeurform&view=submissions'); ?>" method="post" name="adminForm" id="adminForm">
 
         <!-- Search bar -->
         <?php if ($isJ4): ?>
@@ -26,7 +26,7 @@ $isJ4 = RedeuformHelper::isJoomla4();
                 <button type="submit" class="btn btn-primary" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>">
                     <span class="icon-search" aria-hidden="true"></span>
                 </button>
-                <a href="<?php echo JRoute::_('index.php?option=com_redeuform&view=submissions'); ?>"
+                <a href="<?php echo JRoute::_('index.php?option=com_redeurform&view=submissions'); ?>"
                    class="btn btn-secondary" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>">
                     <span class="icon-times" aria-hidden="true"></span>
                 </a>
@@ -45,7 +45,7 @@ $isJ4 = RedeuformHelper::isJoomla4();
                 <button type="submit" class="btn hasTooltip" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>">
                     <span class="icon-search"></span>
                 </button>
-                <a href="<?php echo JRoute::_('index.php?option=com_redeuform&view=submissions'); ?>"
+                <a href="<?php echo JRoute::_('index.php?option=com_redeurform&view=submissions'); ?>"
                    class="btn hasTooltip" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>">
                     <span class="icon-remove"></span>
                 </a>
@@ -58,12 +58,12 @@ $isJ4 = RedeuformHelper::isJoomla4();
             <thead>
                 <tr>
                     <th width="1%"><?php echo JHtml::_('grid.checkall'); ?></th>
-                    <th><?php echo JHtml::_('grid.sort', 'COM_REDEUFORM_FIELD_NAME',  'name',       $this->listDirn, $this->listOrder); ?></th>
-                    <th><?php echo JHtml::_('grid.sort', 'COM_REDEUFORM_FIELD_EMAIL', 'email',      $this->listDirn, $this->listOrder); ?></th>
-                    <th><?php echo JText::_('COM_REDEUFORM_FIELD_PHONE'); ?></th>
-                    <th><?php echo JText::_('COM_REDEUFORM_FIELD_MESSAGE'); ?></th>
-                    <th><?php echo JText::_('COM_REDEUFORM_FIELD_IP'); ?></th>
-                    <th><?php echo JHtml::_('grid.sort', 'COM_REDEUFORM_FIELD_DATE',  'created_at', $this->listDirn, $this->listOrder); ?></th>
+                    <th><?php echo JHtml::_('grid.sort', 'COM_REDEURFORM_FIELD_NAME',  'name',       $this->listDirn, $this->listOrder); ?></th>
+                    <th><?php echo JHtml::_('grid.sort', 'COM_REDEURFORM_FIELD_EMAIL', 'email',      $this->listDirn, $this->listOrder); ?></th>
+                    <th><?php echo JText::_('COM_REDEURFORM_FIELD_PHONE'); ?></th>
+                    <th><?php echo JText::_('COM_REDEURFORM_FIELD_MESSAGE'); ?></th>
+                    <th><?php echo JText::_('COM_REDEURFORM_FIELD_IP'); ?></th>
+                    <th><?php echo JHtml::_('grid.sort', 'COM_REDEURFORM_FIELD_DATE',  'created_at', $this->listDirn, $this->listOrder); ?></th>
                 </tr>
             </thead>
             <tfoot>
@@ -73,7 +73,7 @@ $isJ4 = RedeuformHelper::isJoomla4();
             </tfoot>
             <tbody>
                 <?php if (empty($this->items)): ?>
-                    <tr><td colspan="7" class="center"><?php echo JText::_('COM_REDEUFORM_NO_SUBMISSIONS'); ?></td></tr>
+                    <tr><td colspan="7" class="center"><?php echo JText::_('COM_REDEURFORM_NO_SUBMISSIONS'); ?></td></tr>
                 <?php else: ?>
                     <?php foreach ($this->items as $i => $item): ?>
                     <tr class="row<?php echo $i % 2; ?>">

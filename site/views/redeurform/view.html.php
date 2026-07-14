@@ -1,13 +1,13 @@
 <?php
 defined('_JEXEC') or die;
 
-class RedeuformViewRedeuform extends JViewLegacy
+class RedeurformViewRedeurform extends JViewLegacy
 {
     protected $params;
 
     public function display($tpl = null)
     {
-        $this->params = JComponentHelper::getParams('com_redeuform');
+        $this->params = JComponentHelper::getParams('com_redeurform');
         $this->token  = JSession::getFormToken();
 
         JHtml::_('behavior.keepalive');
@@ -16,13 +16,13 @@ class RedeuformViewRedeuform extends JViewLegacy
 
         // ── Component stylesheet ───────────────────────────────────────────────
         $doc->addStyleSheet(
-            JUri::root(true) . '/media/com_redeuform/css/redeuform.css',
+            JUri::root(true) . '/media/com_redeurform/css/redeurform.css',
             array('version' => '1.0.9')
         );
 
         // ── Colour overrides via CSS custom properties ─────────────────────────
         // Reads admin-configured colours and injects them as a scoped :root block.
-        // Falls back to the defaults baked into redeuform.css if params are empty.
+        // Falls back to the defaults baked into redeurform.css if params are empty.
         $colorPrimary    = $this->sanitizeColor($this->params->get('color_primary',   '#4e9d6d'));
         $colorSecondary  = $this->sanitizeColor($this->params->get('color_secondary',  '#f6eb14'));
         $colorBackground = $this->sanitizeColor($this->params->get('color_background', '#ffffff'));
@@ -34,7 +34,7 @@ class RedeuformViewRedeuform extends JViewLegacy
         $colorAccent2    = $this->sanitizeColor($this->params->get('color_accent2',    '#6db88a'));
         $colorAccent3    = $this->sanitizeColor($this->params->get('color_accent3',    '#f6eb14'));
 
-        $css = '#redeuform-app {' . "\n" .
+        $css = '#redeurform-app {' . "\n" .
                '  --rf-primary:      ' . $colorPrimary    . ";\n" .
                '  --rf-secondary:    ' . $colorSecondary  . ";\n" .
                '  --rf-bg:           ' . $colorBackground . ";\n" .

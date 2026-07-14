@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 
-abstract class RedeuformHelper
+abstract class RedeurformHelper
 {
     /**
      * Add sidebar navigation entries.
@@ -12,14 +12,14 @@ abstract class RedeuformHelper
         // JHtmlSidebar exists in Joomla 3; Joomla 4 uses a different menu system
         if (class_exists('JHtmlSidebar')) {
             JHtmlSidebar::addEntry(
-                JText::_('COM_REDEUFORM_SUBMISSIONS'),
-                'index.php?option=com_redeuform&view=submissions',
+                JText::_('COM_REDEURFORM_SUBMISSIONS'),
+                'index.php?option=com_redeurform&view=submissions',
                 $vName === 'submissions'
             );
             JHtmlSidebar::addEntry(
-                JText::_('COM_REDEUFORM_SETTINGS'),
-                'index.php?option=com_redeuform&view=redeuform',
-                $vName === 'redeuform'
+                JText::_('COM_REDEURFORM_SETTINGS'),
+                'index.php?option=com_redeurform&view=redeurform',
+                $vName === 'redeurform'
             );
         }
     }

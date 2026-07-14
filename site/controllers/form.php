@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 
-class RedeuformControllerForm extends JControllerLegacy
+class RedeurformControllerForm extends JControllerLegacy
 {
     public function submit()
     {
@@ -9,7 +9,7 @@ class RedeuformControllerForm extends JControllerLegacy
 
         $app   = JFactory::getApplication();
         $input = $app->input;
-        $model = $this->getModel('Form', 'RedeuformModel');
+        $model = $this->getModel('Form', 'RedeurformModel');
 
         $data = array(
             'name'    => $input->getString('name', ''),
@@ -22,26 +22,26 @@ class RedeuformControllerForm extends JControllerLegacy
         $errors = array();
 
         if (empty(trim($data['name']))) {
-            $errors[] = JText::_('COM_REDEUFORM_ERROR_NAME_REQUIRED');
+            $errors[] = JText::_('COM_REDEURFORM_ERROR_NAME_REQUIRED');
         }
         if (empty(trim($data['email'])) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            $errors[] = JText::_('COM_REDEUFORM_ERROR_EMAIL_INVALID');
+            $errors[] = JText::_('COM_REDEURFORM_ERROR_EMAIL_INVALID');
         }
         if (empty(trim($data['message']))) {
-            $errors[] = JText::_('COM_REDEUFORM_ERROR_MESSAGE_REQUIRED');
+            $errors[] = JText::_('COM_REDEURFORM_ERROR_MESSAGE_REQUIRED');
         } elseif (mb_strlen(trim($data['message'])) > 255) {
-            $errors[] = JText::_('COM_REDEUFORM_ERROR_MESSAGE_TOO_LONG');
+            $errors[] = JText::_('COM_REDEURFORM_ERROR_MESSAGE_TOO_LONG');
         }
 
         // ── Cloudflare Turnstile verification ─────────────────────────────────
-        $params    = JComponentHelper::getParams('com_redeuform');
+        $params    = JComponentHelper::getParams('com_redeurform');
         $siteKey   = trim($params->get('turnstile_site_key', ''));
         $secretKey = trim($params->get('turnstile_secret_key', ''));
 
         if (!empty($siteKey) && !empty($secretKey)) {
             $token = $input->getString('cf-turnstile-response', '');
             if (empty($token)) {
-                $errors[] = JText::_('COM_REDEUFORM_ERROR_TURNSTILE_REQUIRED');
+                $errors[] = JText::_('COM_REDEURFORM_ERROR_TURNSTILE_REQUIRED');
             } else {
                 $verifyResult = $this->verifyTurnstile($secretKey, $token);
                 if ($verifyResult !== true) {
@@ -54,19 +54,19 @@ class RedeuformControllerForm extends JControllerLegacy
             foreach ($errors as $error) {
                 $app->enqueueMessage($error, 'error');
             }
-            $app->redirect(JRoute::_('index.php?option=com_redeuform&view=redeuform', false));
+            $app->redirect(JRoute::_('index.php?option=com_redeurform&view=redeurform', false));
             return;
         }
 
         $data['ip_address'] = $app->input->server->getString('REMOTE_ADDR', '');
         if ($model->saveSubmission($data)) {
             $model->sendEmail($data);
-            $app->enqueueMessage(JText::_('COM_REDEUFORM_SUCCESS_MESSAGE'), 'message');
+            $app->enqueueMessage(JText::_('COM_REDEURFORM_SUCCESS_MESSAGE'), 'message');
         } else {
-            $app->enqueueMessage(JText::_('COM_REDEUFORM_ERROR_SAVE_FAILED'), 'error');
+            $app->enqueueMessage(JText::_('COM_REDEURFORM_ERROR_SAVE_FAILED'), 'error');
         }
 
-        $app->redirect(JRoute::_('index.php?option=com_redeuform&view=redeuform', false));
+        $app->redirect(JRoute::_('index.php?option=com_redeurform&view=redeurform', false));
     }
 
     private function verifyTurnstile($secretKey, $token)
@@ -88,7 +88,7 @@ class RedeuformControllerForm extends JControllerLegacy
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
-            CURLOPT_USERAGENT      => 'com_redeuform/1.0.9',
+            CURLOPT_USERAGENT      => 'com_redeurform/1.0.9',
         ));
 
         $response  = curl_exec($ch);
@@ -98,7 +98,7 @@ class RedeuformControllerForm extends JControllerLegacy
 
         if ($curlErrno !== 0 || $response === false) {
             JFactory::getApplication()->enqueueMessage(
-                JText::sprintf('COM_REDEUFORM_WARNING_TURNSTILE_CURL', $curlErrno, $curlError),
+                JText::sprintf('COM_REDEURFORM_WARNING_TURNSTILE_CURL', $curlErrno, $curlError),
                 'warning'
             );
             return true; // fail open on network error
@@ -113,14 +113,14 @@ class RedeuformControllerForm extends JControllerLegacy
         }
 
         if (empty($result) || !is_array($result)) {
-            return JText::_('COM_REDEUFORM_ERROR_TURNSTILE_FAILED');
+            return JText::_('COM_REDEURFORM_ERROR_TURNSTILE_FAILED');
         }
 
         if (empty($result['success'])) {
             $codes = isset($result['error-codes'])
                 ? implode(', ', (array) $result['error-codes'])
                 : 'unknown';
-            return JText::sprintf('COM_REDEUFORM_ERROR_TURNSTILE_FAILED_CODE', $codes);
+            return JText::sprintf('COM_REDEURFORM_ERROR_TURNSTILE_FAILED_CODE', $codes);
         }
 
         return true;

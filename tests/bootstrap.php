@@ -11,4 +11,4 @@ require_once __DIR__ . '/Stubs/JViewLegacy.php';
 
 // Component classes under test
 require_once __DIR__ . '/../admin/tables/submission.php';
-require_once __DIR__ . '/../site/views/redeuform/view.html.php';
+require_once __DIR__ . '/../site/views/redeurform/view.html.php';

@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 
-class RedeuformModelSubmissions extends JModelList
+class RedeurformModelSubmissions extends JModelList
 {
     public function __construct($config = array())
     {
@@ -16,7 +16,7 @@ class RedeuformModelSubmissions extends JModelList
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
 
-        $query->select('*')->from($db->quoteName('#__redeuform_submissions'));
+        $query->select('*')->from($db->quoteName('#__redeurform_submissions'));
 
         $search = $this->getState('filter.search');
         if (!empty($search)) {

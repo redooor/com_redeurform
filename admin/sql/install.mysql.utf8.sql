@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `#__redeuform_submissions` (
+CREATE TABLE IF NOT EXISTS `#__redeurform_submissions` (
     `id`         INT(11)      NOT NULL AUTO_INCREMENT,
     `name`       VARCHAR(255) NOT NULL,
     `email`      VARCHAR(255) NOT NULL,

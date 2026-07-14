@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 
-class RedeuformModelForm extends JModelLegacy
+class RedeurformModelForm extends JModelLegacy
 {
     public function saveSubmission(array $data)
     {
@@ -15,12 +15,12 @@ class RedeuformModelForm extends JModelLegacy
             'created_at' => JFactory::getDate()->toSql(),
             'state'      => 1,
         );
-        return $db->insertObject('#__redeuform_submissions', $row);
+        return $db->insertObject('#__redeurform_submissions', $row);
     }
 
     public function sendEmail(array $data)
     {
-        $params    = JComponentHelper::getParams('com_redeuform');
+        $params    = JComponentHelper::getParams('com_redeurform');
         $jConfig   = JFactory::getConfig();
 
         $toEmail  = trim($params->get('receiving_email', ''));
@@ -61,7 +61,7 @@ class RedeuformModelForm extends JModelLegacy
         $mailer->setSender(array($fromEmail, $fromName));
         $mailer->addRecipient($toEmail, $toName);
         $mailer->addReplyTo($data['email'], $data['name']);
-        $mailer->setSubject(JText::_('COM_REDEUFORM_EMAIL_SUBJECT'));
+        $mailer->setSubject(JText::_('COM_REDEURFORM_EMAIL_SUBJECT'));
         $mailer->setBody($body);
         $mailer->isHTML(false);
 

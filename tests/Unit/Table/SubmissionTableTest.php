@@ -3,10 +3,10 @@ use PHPUnit\Framework\TestCase;
 
 class SubmissionTableTest extends TestCase
 {
-    private function make(): RedeuformTableSubmission
+    private function make(): RedeurformTableSubmission
     {
         $db = null;
-        return new RedeuformTableSubmission($db);
+        return new RedeurformTableSubmission($db);
     }
 
     public function test_valid_data_passes(): void
@@ -27,7 +27,7 @@ class SubmissionTableTest extends TestCase
         $table->message = 'Hello';
 
         $this->assertFalse($table->check());
-        $this->assertSame('COM_REDEUFORM_ERROR_NAME_REQUIRED', $table->getError());
+        $this->assertSame('COM_REDEURFORM_ERROR_NAME_REQUIRED', $table->getError());
     }
 
     public function test_invalid_email_fails(): void
@@ -38,7 +38,7 @@ class SubmissionTableTest extends TestCase
         $table->message = 'Hello';
 
         $this->assertFalse($table->check());
-        $this->assertSame('COM_REDEUFORM_ERROR_EMAIL_INVALID', $table->getError());
+        $this->assertSame('COM_REDEURFORM_ERROR_EMAIL_INVALID', $table->getError());
     }
 
     public function test_empty_email_fails(): void
@@ -49,7 +49,7 @@ class SubmissionTableTest extends TestCase
         $table->message = 'Hello';
 
         $this->assertFalse($table->check());
-        $this->assertSame('COM_REDEUFORM_ERROR_EMAIL_INVALID', $table->getError());
+        $this->assertSame('COM_REDEURFORM_ERROR_EMAIL_INVALID', $table->getError());
     }
 
     public function test_missing_message_fails(): void
@@ -60,7 +60,7 @@ class SubmissionTableTest extends TestCase
         $table->message = '';
 
         $this->assertFalse($table->check());
-        $this->assertSame('COM_REDEUFORM_ERROR_MESSAGE_REQUIRED', $table->getError());
+        $this->assertSame('COM_REDEURFORM_ERROR_MESSAGE_REQUIRED', $table->getError());
     }
 
     public function test_message_over_255_chars_fails(): void
@@ -71,7 +71,7 @@ class SubmissionTableTest extends TestCase
         $table->message = str_repeat('a', 256);
 
         $this->assertFalse($table->check());
-        $this->assertSame('COM_REDEUFORM_ERROR_MESSAGE_TOO_LONG', $table->getError());
+        $this->assertSame('COM_REDEURFORM_ERROR_MESSAGE_TOO_LONG', $table->getError());
     }
 
     public function test_message_exactly_255_chars_passes(): void
@@ -105,6 +105,6 @@ class SubmissionTableTest extends TestCase
         $this->assertFalse($table->check());
         // Only the first error (name) should be recorded
         $this->assertCount(1, $table->getErrors());
-        $this->assertSame('COM_REDEUFORM_ERROR_NAME_REQUIRED', $table->getError());
+        $this->assertSame('COM_REDEURFORM_ERROR_NAME_REQUIRED', $table->getError());
     }
 }
