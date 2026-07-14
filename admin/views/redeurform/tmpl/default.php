@@ -26,6 +26,42 @@ $tsiteKey        = trim($params->get('turnstile_site_key', ''));
 $tsecretKey      = trim($params->get('turnstile_secret_key', ''));
 $turnstileActive = !empty($tsiteKey) && !empty($tsecretKey);
 
+function rfSanitizeColor($value, $default)
+{
+    $value = trim($value);
+    if (preg_match('/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/', $value)) {
+        return $value;
+    }
+    return $default;
+}
+
+$previewColors = array(
+    'color_primary'      => rfSanitizeColor($params->get('color_primary',      '#4e9d6d'), '#4e9d6d'),
+    'color_secondary'    => rfSanitizeColor($params->get('color_secondary',    '#f6eb14'), '#f6eb14'),
+    'color_background'   => rfSanitizeColor($params->get('color_background',   '#ffffff'), '#ffffff'),
+    'color_text'         => rfSanitizeColor($params->get('color_text',         '#1a1a1a'), '#1a1a1a'),
+    'color_label'        => rfSanitizeColor($params->get('color_label',        '#4e9d6d'), '#4e9d6d'),
+    'color_button'       => rfSanitizeColor($params->get('color_button',       '#4e9d6d'), '#4e9d6d'),
+    'color_button_text'  => rfSanitizeColor($params->get('color_button_text',  '#ffffff'), '#ffffff'),
+    'color_accent1'      => rfSanitizeColor($params->get('color_accent1',      '#4e9d6d'), '#4e9d6d'),
+    'color_accent2'      => rfSanitizeColor($params->get('color_accent2',      '#6db88a'), '#6db88a'),
+    'color_accent3'      => rfSanitizeColor($params->get('color_accent3',      '#f6eb14'), '#f6eb14'),
+);
+
+// Maps colour field names to the CSS custom property they control.
+$previewVarMap = array(
+    'color_primary'     => '--rf-primary',
+    'color_secondary'   => '--rf-secondary',
+    'color_background'  => '--rf-bg',
+    'color_text'        => '--rf-text',
+    'color_label'       => '--rf-label',
+    'color_button'      => '--rf-btn-bg',
+    'color_button_text' => '--rf-btn-text',
+    'color_accent1'     => '--rf-accent1',
+    'color_accent2'     => '--rf-accent2',
+    'color_accent3'     => '--rf-accent3',
+);
+
 function rfPlaceholderTable()
 {
     $placeholders = array(
@@ -130,9 +166,58 @@ function rfRenderField($field, $isJ4)
 
         <!-- Tab: Colour Scheme -->
         <div id="rf-pane-colours" class="rf-pane" style="display:none;">
-            <?php foreach ($this->form->getFieldset('colours') as $field): ?>
-                <?php rfRenderField($field, $isJ4); ?>
-            <?php endforeach; ?>
+            <div class="rf-admin-colour-layout">
+
+                <div class="rf-admin-colour-fields">
+                    <?php foreach ($this->form->getFieldset('colours') as $field): ?>
+                        <?php rfRenderField($field, $isJ4); ?>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="rf-admin-colour-preview">
+                    <p class="rf-admin-preview-title"><?php echo JText::_('COM_REDEURFORM_COLOUR_PREVIEW_TITLE'); ?></p>
+
+                    <style>
+                        .rf-admin-colour-preview #redeurform-app {
+                            <?php foreach ($previewColors as $field => $value): ?>
+                            <?php echo $previewVarMap[$field]; ?>: <?php echo $value; ?>;
+                            <?php endforeach; ?>
+                        }
+                    </style>
+
+                    <div id="redeurform-app">
+                        <div class="rf-container">
+                            <div class="rf-header">
+                                <h1 class="rf-title"><?php echo JText::_('COM_REDEURFORM_TITLE'); ?></h1>
+                                <p class="rf-subtitle"><?php echo JText::_('COM_REDEURFORM_SUBTITLE'); ?></p>
+                            </div>
+                            <div class="rf-card">
+                                <div class="rf-card-accent"></div>
+                                <div class="rf-card-body">
+                                    <div class="rf-form">
+                                        <div class="rf-field">
+                                            <label class="rf-label"><?php echo JText::_('COM_REDEURFORM_FIELD_NAME'); ?><span class="rf-required">*</span></label>
+                                            <input type="text" class="rf-input" placeholder="<?php echo JText::_('COM_REDEURFORM_FIELD_NAME_PLACEHOLDER'); ?>" readonly />
+                                        </div>
+                                        <div class="rf-field">
+                                            <label class="rf-label"><?php echo JText::_('COM_REDEURFORM_FIELD_EMAIL'); ?><span class="rf-required">*</span></label>
+                                            <input type="text" class="rf-input" placeholder="<?php echo JText::_('COM_REDEURFORM_FIELD_EMAIL_PLACEHOLDER'); ?>" readonly />
+                                        </div>
+                                        <div class="rf-field">
+                                            <label class="rf-label"><?php echo JText::_('COM_REDEURFORM_FIELD_MESSAGE'); ?><span class="rf-required">*</span></label>
+                                            <textarea class="rf-textarea" placeholder="<?php echo JText::_('COM_REDEURFORM_FIELD_MESSAGE_PLACEHOLDER'); ?>" readonly></textarea>
+                                        </div>
+                                        <button type="button" class="rf-submit" tabindex="-1">
+                                            <?php echo JText::_('COM_REDEURFORM_BUTTON_SEND'); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
         <input type="hidden" name="task" value="" />
@@ -237,6 +322,20 @@ function rfRenderField($field, $isJ4)
             activate(this);
         });
     });
+
+    // Live colour preview
+    var previewApp = document.querySelector('.rf-admin-colour-preview #redeurform-app');
+    var varMap = <?php echo json_encode($previewVarMap); ?>;
+
+    if (previewApp) {
+        Object.keys(varMap).forEach(function (fieldName) {
+            var input = document.querySelector('[name="jform[' + fieldName + ']"]');
+            if (!input) return;
+            input.addEventListener('input', function () {
+                previewApp.style.setProperty(varMap[fieldName], input.value);
+            });
+        });
+    }
 }());
 </script>
 

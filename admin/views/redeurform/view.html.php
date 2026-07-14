@@ -25,7 +25,9 @@ class RedeurformViewRedeurform extends JViewLegacy
             $this->sidebar = JHtmlSidebar::render();
         }
 
-        JFactory::getDocument()->addStyleSheet(JUri::root(true) . '/media/com_redeurform/css/redeurform-admin.css');
+        $doc = JFactory::getDocument();
+        $doc->addStyleSheet(JUri::root(true) . '/media/com_redeurform/css/redeurform-admin.css');
+        $doc->addStyleSheet(JUri::root(true) . '/media/com_redeurform/css/redeurform.css');
 
         parent::display($tpl);
     }
