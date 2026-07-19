@@ -17,6 +17,11 @@ class RedeurformViewRedeurform extends JViewLegacy
     {
         $this->form = $this->get('Form');
 
+        // Joomla 4's toolbar calls document.formvalidator for forms carrying
+        // the form-validate class. Load the validator before the toolbar's
+        // Apply and Save buttons can submit this settings form.
+        JHtml::_('behavior.formvalidator');
+
         RedeurformHelper::addSubmenu('redeurform');
 
         $this->addToolbar();
