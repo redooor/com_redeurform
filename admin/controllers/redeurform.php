@@ -27,11 +27,7 @@ class RedeurformControllerRedeurform extends JControllerForm
 
         if ($model->save($data)) {
             $app->enqueueMessage(JText::_('COM_REDEURFORM_SETTINGS_SAVED'));
-            if ($key === 'apply') {
-                $app->redirect(JRoute::_('index.php?option=com_redeurform&view=redeurform', false));
-            } else {
-                $app->redirect(JRoute::_('index.php?option=com_redeurform&view=submissions', false));
-            }
+            $app->redirect(JRoute::_('index.php?option=com_redeurform&view=redeurform', false));
         } else {
             $app->enqueueMessage(JText::_('COM_REDEURFORM_SETTINGS_SAVE_FAILED'), 'error');
             $app->redirect(JRoute::_('index.php?option=com_redeurform&view=redeurform', false));
